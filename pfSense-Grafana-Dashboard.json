@@ -22,7 +22,7 @@
   "fiscalYearStartMonth": 0,
   "graphTooltip": 0,
   "id": 3,
-  "iteration": 1644498456105,
+  "iteration": 1644536390805,
   "links": [],
   "liveNow": true,
   "panels": [
@@ -159,7 +159,7 @@
             "type": "influxdb",
             "uid": "${dataSource}"
           },
-          "query": "from(bucket: \"pfsense_201\")\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) => r[\"_measurement\"] == \"cpu\")\n  |> filter(fn: (r) => r[\"_field\"] == \"usage_system\")\n  |> filter(fn: (r) => r[\"cpu\"] == \"cpu-total\")\n  |> aggregateWindow(every: v.windowPeriod, fn: mean, createEmpty: false)\n  |> yield(name: \"mean\")",
+          "query": "from(bucket: \"${dataSource}\")\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) => r[\"_measurement\"] == \"cpu\")\n  |> filter(fn: (r) => r[\"_field\"] == \"usage_system\")\n  |> filter(fn: (r) => r[\"cpu\"] == \"cpu-total\")\n  |> aggregateWindow(every: v.windowPeriod, fn: mean, createEmpty: false)\n  |> yield(name: \"mean\")",
           "refId": "A"
         }
       ],
@@ -252,7 +252,7 @@
             "type": "influxdb",
             "uid": "${dataSource}"
           },
-          "query": "from(bucket: \"pfsense_201\")\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) => r[\"_measurement\"] == \"cpu\")\n  |> filter(fn: (r) => r[\"_field\"] == \"usage_system\")\n  |> filter(fn: (r) => r[\"cpu\"] != \"cpu-total\")\n  |> aggregateWindow(every: v.windowPeriod, fn: mean, createEmpty: false)\n  |> yield(name: \"mean\")",
+          "query": "from(bucket: \"${dataSource}\")\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) => r[\"_measurement\"] == \"cpu\")\n  |> filter(fn: (r) => r[\"_field\"] == \"usage_system\")\n  |> filter(fn: (r) => r[\"cpu\"] != \"cpu-total\")\n  |> aggregateWindow(every: v.windowPeriod, fn: mean, createEmpty: false)\n  |> yield(name: \"mean\")",
           "refId": "A"
         }
       ],
@@ -584,7 +584,7 @@
             "type": "influxdb",
             "uid": "${dataSource}"
           },
-          "query": "from(bucket: \"pfsense_201\")\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) => r[\"_measurement\"] == \"system\")\n  |> filter(fn: (r) => r[\"_field\"] == \"uptime\")\n  |> aggregateWindow(every: v.windowPeriod, fn: mean, createEmpty: false)\n  |> yield(name: \"mean\")",
+          "query": "from(bucket: \"${dataSource}\")\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) => r[\"_measurement\"] == \"system\")\n  |> filter(fn: (r) => r[\"_field\"] == \"uptime\")\n  |> aggregateWindow(every: v.windowPeriod, fn: mean, createEmpty: false)\n  |> yield(name: \"mean\")",
           "refId": "A"
         }
       ],
@@ -1019,7 +1019,7 @@
       "type": "timeseries"
     },
     {
-      "collapsed": true,
+      "collapsed": false,
       "gridPos": {
         "h": 1,
         "w": 24,
@@ -1027,2022 +1027,673 @@
         "y": 13
       },
       "id": 22,
-      "panels": [
-        {
-          "datasource": {
-            "type": "influxdb",
-            "uid": "${dataSource}"
+      "panels": [],
+      "title": "pfBlocker Stats",
+      "type": "row"
+    },
+    {
+      "datasource": {
+        "type": "influxdb",
+        "uid": "${dataSource}"
+      },
+      "description": "",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
           },
-          "description": "",
-          "fieldConfig": {
-            "defaults": {
-              "color": {
-                "mode": "thresholds"
-              },
-              "custom": {
-                "align": "auto",
-                "displayMode": "auto",
-                "filterable": false
-              },
-              "mappings": [],
-              "thresholds": {
-                "mode": "absolute",
-                "steps": [
-                  {
-                    "color": "green",
-                    "value": null
-                  },
-                  {
-                    "color": "red",
-                    "value": 80
-                  }
-                ]
-              }
-            },
-            "overrides": [
+          "custom": {
+            "align": "auto",
+            "displayMode": "auto",
+            "filterable": false
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
               {
-                "matcher": {
-                  "id": "byName",
-                  "options": "Blocked"
-                },
-                "properties": [
-                  {
-                    "id": "custom.width",
-                    "value": 72
-                  }
-                ]
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
               }
             ]
-          },
-          "gridPos": {
-            "h": 8,
-            "w": 3,
-            "x": 0,
-            "y": 2
-          },
-          "id": 58,
-          "options": {
-            "footer": {
-              "fields": "",
-              "reducer": [
-                "sum"
-              ],
-              "show": false
-            },
-            "frameIndex": 2,
-            "showHeader": true,
-            "sortBy": []
-          },
-          "pluginVersion": "8.3.0-beta2",
-          "targets": [
-            {
-              "datasource": {
-                "type": "influxdb",
-                "uid": "${dataSource}"
-              },
-              "query": "from(bucket: \"${dataSource}\")\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) => r[\"_measurement\"] == \"tail_ip_block_log\")\n  |> filter(fn: (r) => r[\"_field\"] == \"direction\")\n  |> filter(fn: (r) => r[\"_value\"] == \"in\")\n  |> aggregateWindow(every: v.windowPeriod, fn: last, createEmpty: false)\n  |> group(columns: [\"src_ip\"], mode:\"by\")\n  |> count(column: \"_value\")\n  |> group()\n  |> top(n: 10)\n  |> drop(columns:[\"_start\",\"_stop\"])",
-              "refId": "A"
-            }
-          ],
-          "title": "IP - Top 10 Blocked - IN",
-          "transformations": [
-            {
-              "id": "organize",
-              "options": {
-                "excludeByName": {},
-                "indexByName": {
-                  "_value": 1,
-                  "src_ip": 0
-                },
-                "renameByName": {
-                  "_value": "Blocked",
-                  "src_ip": "Source IP",
-                  "tld": "Domain"
-                }
-              }
-            }
-          ],
-          "type": "table"
+          }
         },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Blocked"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 72
+              }
+            ]
+          }
+        ]
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 3,
+        "x": 0,
+        "y": 14
+      },
+      "id": 58,
+      "options": {
+        "footer": {
+          "fields": "",
+          "reducer": [
+            "sum"
+          ],
+          "show": false
+        },
+        "frameIndex": 2,
+        "showHeader": true,
+        "sortBy": []
+      },
+      "pluginVersion": "8.3.0-beta2",
+      "targets": [
         {
           "datasource": {
             "type": "influxdb",
             "uid": "${dataSource}"
           },
-          "description": "",
-          "fieldConfig": {
-            "defaults": {
-              "color": {
-                "mode": "thresholds"
-              },
-              "custom": {
-                "align": "auto",
-                "displayMode": "auto",
-                "filterable": false
-              },
-              "mappings": [],
-              "thresholds": {
-                "mode": "absolute",
-                "steps": [
-                  {
-                    "color": "green",
-                    "value": null
-                  },
-                  {
-                    "color": "red",
-                    "value": 80
-                  }
-                ]
-              }
+          "query": "from(bucket: \"${dataSource}\")\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) => r[\"_measurement\"] == \"tail_ip_block_log\")\n  |> filter(fn: (r) => r[\"_field\"] == \"direction\")\n  |> filter(fn: (r) => r[\"_value\"] == \"in\")\n  |> aggregateWindow(every: v.windowPeriod, fn: last, createEmpty: false)\n  |> group(columns: [\"src_ip\"], mode:\"by\")\n  |> count(column: \"_value\")\n  |> group()\n  |> top(n: 10)\n  |> drop(columns:[\"_start\",\"_stop\"])",
+          "refId": "A"
+        }
+      ],
+      "title": "IP - Top 10 Blocked - IN",
+      "transformations": [
+        {
+          "id": "organize",
+          "options": {
+            "excludeByName": {},
+            "indexByName": {
+              "_value": 1,
+              "src_ip": 0
             },
-            "overrides": [
+            "renameByName": {
+              "_value": "Blocked",
+              "src_ip": "Source IP",
+              "tld": "Domain"
+            }
+          }
+        }
+      ],
+      "type": "table"
+    },
+    {
+      "datasource": {
+        "type": "influxdb",
+        "uid": "${dataSource}"
+      },
+      "description": "",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "custom": {
+            "align": "auto",
+            "displayMode": "auto",
+            "filterable": false
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
               {
-                "matcher": {
-                  "id": "byName",
-                  "options": "Blocked"
-                },
-                "properties": [
-                  {
-                    "id": "custom.width",
-                    "value": 72
-                  }
-                ]
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
               }
             ]
-          },
-          "gridPos": {
-            "h": 8,
-            "w": 3,
-            "x": 3,
-            "y": 2
-          },
-          "id": 59,
-          "options": {
-            "footer": {
-              "fields": "",
-              "reducer": [
-                "sum"
-              ],
-              "show": false
+          }
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Blocked"
             },
-            "frameIndex": 2,
-            "showHeader": true,
-            "sortBy": []
-          },
-          "pluginVersion": "8.3.0-beta2",
-          "targets": [
-            {
-              "datasource": {
-                "type": "influxdb",
-                "uid": "${dataSource}"
-              },
-              "query": "from(bucket: \"${dataSource}\")\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) => r[\"_measurement\"] == \"tail_ip_block_log\")\n  |> filter(fn: (r) => r[\"_field\"] == \"direction\")\n  |> filter(fn: (r) => r[\"_value\"] == \"out\")\n  |> aggregateWindow(every: v.windowPeriod, fn: last, createEmpty: false)\n  |> group(columns: [\"src_ip\"], mode:\"by\")\n  |> count(column: \"_value\")\n  |> group()\n  |> sort(columns: [\"_value\"], desc: true)\n  |> top(n: 10)\n  |> drop(columns:[\"_start\",\"_stop\"])",
-              "refId": "A"
-            }
-          ],
-          "title": "IP - Top 10 Blocked - OUT",
-          "transformations": [
-            {
-              "id": "organize",
-              "options": {
-                "excludeByName": {},
-                "indexByName": {
-                  "_value": 1,
-                  "src_ip": 0
-                },
-                "renameByName": {
-                  "_value": "Blocked",
-                  "src_ip": "Source IP",
-                  "tld": "Domain"
-                }
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 72
               }
-            }
+            ]
+          }
+        ]
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 3,
+        "x": 3,
+        "y": 14
+      },
+      "id": 59,
+      "options": {
+        "footer": {
+          "fields": "",
+          "reducer": [
+            "sum"
           ],
-          "type": "table"
+          "show": false
+        },
+        "frameIndex": 2,
+        "showHeader": true,
+        "sortBy": []
+      },
+      "pluginVersion": "8.3.0-beta2",
+      "targets": [
+        {
+          "datasource": {
+            "type": "influxdb",
+            "uid": "${dataSource}"
+          },
+          "query": "from(bucket: \"${dataSource}\")\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) => r[\"_measurement\"] == \"tail_ip_block_log\")\n  |> filter(fn: (r) => r[\"_field\"] == \"direction\")\n  |> filter(fn: (r) => r[\"_value\"] == \"out\")\n  |> aggregateWindow(every: v.windowPeriod, fn: last, createEmpty: false)\n  |> group(columns: [\"src_ip\"], mode:\"by\")\n  |> count(column: \"_value\")\n  |> group()\n  |> sort(columns: [\"_value\"], desc: true)\n  |> top(n: 10)\n  |> drop(columns:[\"_start\",\"_stop\"])",
+          "refId": "A"
+        }
+      ],
+      "title": "IP - Top 10 Blocked - OUT",
+      "transformations": [
+        {
+          "id": "organize",
+          "options": {
+            "excludeByName": {},
+            "indexByName": {
+              "_value": 1,
+              "src_ip": 0
+            },
+            "renameByName": {
+              "_value": "Blocked",
+              "src_ip": "Source IP",
+              "tld": "Domain"
+            }
+          }
+        }
+      ],
+      "type": "table"
+    },
+    {
+      "datasource": {
+        "type": "influxdb",
+        "uid": "Tr_isUb7k"
+      },
+      "description": "",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 3,
+        "x": 6,
+        "y": 14
+      },
+      "id": 68,
+      "options": {
+        "colorMode": "value",
+        "graphMode": "area",
+        "justifyMode": "center",
+        "orientation": "horizontal",
+        "reduceOptions": {
+          "calcs": [
+            "sum"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "text": {},
+        "textMode": "value_and_name"
+      },
+      "pluginVersion": "8.3.0-beta2",
+      "targets": [
+        {
+          "datasource": {
+            "type": "influxdb",
+            "uid": "Tr_isUb7k"
+          },
+          "hide": false,
+          "query": "from(bucket: \"${dataSource}\")\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) => r[\"_measurement\"] == \"tail_ip_block_log\")\n  |> filter(fn: (r) => r[\"_field\"] == \"direction\")\n  |> filter(fn: (r) => r[\"_value\"] == \"in\")\n  |> aggregateWindow(every: v.windowPeriod, fn: last, createEmpty: false)\n  |> group(columns: [\"_time\"], mode:\"by\")\n  |> count(column: \"_value\")\n  |> rename(columns: {\"_value\": \"Blocked Inbound\"})\n  |> group()",
+          "refId": "A"
         },
         {
           "datasource": {
             "type": "influxdb",
             "uid": "Tr_isUb7k"
           },
-          "description": "",
-          "fieldConfig": {
-            "defaults": {
-              "color": {
-                "mode": "thresholds"
-              },
-              "mappings": [],
-              "thresholds": {
-                "mode": "absolute",
-                "steps": [
-                  {
-                    "color": "green",
-                    "value": null
-                  }
-                ]
-              }
-            },
-            "overrides": []
-          },
-          "gridPos": {
-            "h": 8,
-            "w": 3,
-            "x": 6,
-            "y": 2
-          },
-          "id": 68,
-          "options": {
-            "colorMode": "value",
-            "graphMode": "area",
-            "justifyMode": "center",
-            "orientation": "horizontal",
-            "reduceOptions": {
-              "calcs": [
-                "sum"
-              ],
-              "fields": "",
-              "values": false
-            },
-            "text": {},
-            "textMode": "value_and_name"
-          },
-          "pluginVersion": "8.3.0-beta2",
-          "targets": [
-            {
-              "datasource": {
-                "type": "influxdb",
-                "uid": "Tr_isUb7k"
-              },
-              "hide": false,
-              "query": "from(bucket: \"${dataSource}\")\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) => r[\"_measurement\"] == \"tail_ip_block_log\")\n  |> filter(fn: (r) => r[\"_field\"] == \"direction\")\n  |> filter(fn: (r) => r[\"_value\"] == \"in\")\n  |> aggregateWindow(every: v.windowPeriod, fn: last, createEmpty: false)\n  |> group(columns: [\"_time\"], mode:\"by\")\n  |> count(column: \"_value\")\n  |> rename(columns: {\"_value\": \"Blocked Inbound\"})\n  |> group()",
-              "refId": "A"
-            },
-            {
-              "datasource": {
-                "type": "influxdb",
-                "uid": "Tr_isUb7k"
-              },
-              "hide": false,
-              "query": "from(bucket: \"pfsense_201\")\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) => r[\"_measurement\"] == \"tail_ip_block_log\")\n  |> filter(fn: (r) => r[\"_field\"] == \"direction\")\n  |> filter(fn: (r) => r[\"_value\"] == \"out\")\n  |> aggregateWindow(every: v.windowPeriod, fn: last, createEmpty: false)\n  |> group(columns: [\"_time\"], mode:\"by\")\n  |> count(column: \"_value\")\n  |> rename(columns: {\"_value\": \"Blocked Outbound\"})\n\n  |> group()",
-              "refId": "B"
-            }
-          ],
-          "title": "IP - Blocked Packet Stats",
-          "transformations": [
-            {
-              "id": "renameByRegex",
-              "options": {}
-            }
-          ],
-          "type": "stat"
-        },
-        {
-          "datasource": {
-            "type": "influxdb",
-            "uid": "${dataSource}"
-          },
-          "fieldConfig": {
-            "defaults": {
-              "color": {
-                "mode": "thresholds"
-              },
-              "mappings": [],
-              "thresholds": {
-                "mode": "absolute",
-                "steps": [
-                  {
-                    "color": "green",
-                    "value": null
-                  },
-                  {
-                    "color": "#EAB839",
-                    "value": 0
-                  },
-                  {
-                    "color": "#6ED0E0",
-                    "value": 10
-                  },
-                  {
-                    "color": "#EF843C",
-                    "value": 20
-                  },
-                  {
-                    "color": "#E24D42",
-                    "value": 30
-                  },
-                  {
-                    "color": "#1F78C1",
-                    "value": 40
-                  },
-                  {
-                    "color": "#BA43A9",
-                    "value": 50
-                  },
-                  {
-                    "color": "#705DA0",
-                    "value": 60
-                  },
-                  {
-                    "color": "#508642",
-                    "value": 70
-                  },
-                  {
-                    "color": "#CCA300",
-                    "value": 80
-                  },
-                  {
-                    "color": "#447EBC",
-                    "value": 90
-                  },
-                  {
-                    "color": "#C15C17",
-                    "value": 100
-                  }
-                ]
-              }
-            },
-            "overrides": []
-          },
-          "gridPos": {
-            "h": 8,
-            "w": 6,
-            "x": 9,
-            "y": 2
-          },
-          "id": 66,
-          "options": {
-            "basemap": {
-              "config": {},
-              "name": "Layer 0",
-              "type": "default"
-            },
-            "controls": {
-              "mouseWheelZoom": true,
-              "showAttribution": true,
-              "showDebug": false,
-              "showScale": false,
-              "showZoom": true
-            },
-            "layers": [
-              {
-                "config": {
-                  "showLegend": true,
-                  "style": {
-                    "color": {
-                      "field": "_value",
-                      "fixed": "dark-green"
-                    },
-                    "opacity": 0.4,
-                    "size": {
-                      "field": "_value",
-                      "fixed": 5,
-                      "max": 15,
-                      "min": 2
-                    },
-                    "symbol": {
-                      "fixed": "img/icons/marker/circle.svg",
-                      "mode": "fixed"
-                    },
-                    "textConfig": {
-                      "fontSize": 12,
-                      "offsetX": 0,
-                      "offsetY": 0,
-                      "textAlign": "center",
-                      "textBaseline": "middle"
-                    }
-                  }
-                },
-                "location": {
-                  "geohash": "geoip_code",
-                  "lookup": "geoip_code",
-                  "mode": "lookup"
-                },
-                "name": "Layer 1",
-                "type": "markers"
-              }
-            ],
-            "view": {
-              "id": "zero",
-              "lat": 0,
-              "lon": 0,
-              "zoom": 1
-            }
-          },
-          "pluginVersion": "8.3.0-beta2",
-          "targets": [
-            {
-              "datasource": {
-                "type": "influxdb",
-                "uid": "${dataSource}"
-              },
-              "query": "from(bucket: \"${dataSource}\")\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) => r[\"_measurement\"] == \"tail_ip_block_log\")\n  |> filter(fn: (r) => r[\"_field\"] == \"ip_evaluated\")\n  |> aggregateWindow(every: v.windowPeriod, fn: last, createEmpty: false)\n  |> group(columns: [\"geoip_code\"], mode:\"by\")\n  |> count(column: \"_value\")\n  |> group()",
-              "refId": "A"
-            }
-          ],
-          "title": "IP  - Src/Dst Blocked Geo",
-          "type": "geomap"
-        },
-        {
-          "datasource": {
-            "type": "influxdb",
-            "uid": "${dataSource}"
-          },
-          "description": "",
-          "fieldConfig": {
-            "defaults": {
-              "color": {
-                "mode": "thresholds"
-              },
-              "mappings": [],
-              "thresholds": {
-                "mode": "absolute",
-                "steps": [
-                  {
-                    "color": "green",
-                    "value": null
-                  }
-                ]
-              }
-            },
-            "overrides": []
-          },
-          "gridPos": {
-            "h": 8,
-            "w": 3,
-            "x": 15,
-            "y": 2
-          },
-          "id": 70,
-          "options": {
-            "colorMode": "value",
-            "graphMode": "area",
-            "justifyMode": "auto",
-            "orientation": "horizontal",
-            "reduceOptions": {
-              "calcs": [
-                "sum"
-              ],
-              "fields": "/^Value$/",
-              "values": false
-            },
-            "textMode": "auto"
-          },
-          "pluginVersion": "8.3.0-beta2",
-          "targets": [
-            {
-              "datasource": {
-                "type": "influxdb",
-                "uid": "${dataSource}"
-              },
-              "query": "from(bucket: \"${dataSource}\")\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) => r[\"_measurement\"] == \"tail_dnsbl_log\")\n  |> group(columns: [\"tld\"], mode:\"by\")\n  |> aggregateWindow(every: v.windowPeriod, fn: last, createEmpty: false)\n  |> group(columns: [\"_time\"], mode:\"by\")\n  |> count(column: \"_value\")\n  |> group()\n  ",
-              "refId": "A"
-            }
-          ],
-          "title": "DNSBL - Blocked Domain Queries",
-          "type": "stat"
-        },
-        {
-          "datasource": {
-            "type": "influxdb",
-            "uid": "${dataSource}"
-          },
-          "description": "",
-          "fieldConfig": {
-            "defaults": {
-              "color": {
-                "mode": "thresholds"
-              },
-              "custom": {
-                "align": "auto",
-                "displayMode": "auto",
-                "filterable": false
-              },
-              "mappings": [],
-              "thresholds": {
-                "mode": "absolute",
-                "steps": [
-                  {
-                    "color": "green",
-                    "value": null
-                  },
-                  {
-                    "color": "red",
-                    "value": 80
-                  }
-                ]
-              }
-            },
-            "overrides": [
-              {
-                "matcher": {
-                  "id": "byName",
-                  "options": "Blocked"
-                },
-                "properties": [
-                  {
-                    "id": "custom.width",
-                    "value": 72
-                  }
-                ]
-              }
-            ]
-          },
-          "gridPos": {
-            "h": 8,
-            "w": 3,
-            "x": 18,
-            "y": 2
-          },
-          "id": 24,
-          "options": {
-            "footer": {
-              "fields": "",
-              "reducer": [
-                "sum"
-              ],
-              "show": false
-            },
-            "frameIndex": 2,
-            "showHeader": true,
-            "sortBy": []
-          },
-          "pluginVersion": "8.3.0-beta2",
-          "targets": [
-            {
-              "datasource": {
-                "type": "influxdb",
-                "uid": "${dataSource}"
-              },
-              "query": "from(bucket: \"${dataSource}\")\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) => r[\"_measurement\"] == \"tail_dnsbl_log\")\n  |> group(columns: [\"tld\"], mode:\"by\")\n  |> aggregateWindow(every: v.windowPeriod, fn: last, createEmpty: false)\n  |> group(columns: [\"src_ip\"], mode:\"by\")\n  |> count(column: \"_value\")\n  |> sort(columns: [\"_value\"], desc: true)\n  |> group()\n  |> top(n: 10)\n  |> drop(columns:[\"_start\",\"_stop\"])",
-              "refId": "A"
-            }
-          ],
-          "title": " DNSBL - Source IP - Top 10 Blocked",
-          "transformations": [
-            {
-              "id": "organize",
-              "options": {
-                "excludeByName": {},
-                "indexByName": {
-                  "_value": 1,
-                  "src_ip": 0
-                },
-                "renameByName": {
-                  "_value": "Blocked",
-                  "src_ip": "Source IP",
-                  "tld": "Domain"
-                }
-              }
-            }
-          ],
-          "type": "table"
-        },
-        {
-          "datasource": {
-            "type": "influxdb",
-            "uid": "${dataSource}"
-          },
-          "description": "",
-          "fieldConfig": {
-            "defaults": {
-              "color": {
-                "mode": "thresholds"
-              },
-              "custom": {
-                "align": "auto",
-                "displayMode": "auto",
-                "filterable": false
-              },
-              "mappings": [],
-              "thresholds": {
-                "mode": "absolute",
-                "steps": [
-                  {
-                    "color": "green",
-                    "value": null
-                  },
-                  {
-                    "color": "red",
-                    "value": 80
-                  }
-                ]
-              }
-            },
-            "overrides": [
-              {
-                "matcher": {
-                  "id": "byName",
-                  "options": "Blocked"
-                },
-                "properties": [
-                  {
-                    "id": "custom.width",
-                    "value": 72
-                  }
-                ]
-              }
-            ]
-          },
-          "gridPos": {
-            "h": 8,
-            "w": 3,
-            "x": 21,
-            "y": 2
-          },
-          "id": 25,
-          "options": {
-            "footer": {
-              "fields": "",
-              "reducer": [
-                "sum"
-              ],
-              "show": false
-            },
-            "frameIndex": 2,
-            "showHeader": true,
-            "sortBy": []
-          },
-          "pluginVersion": "8.3.0-beta2",
-          "targets": [
-            {
-              "datasource": {
-                "type": "influxdb",
-                "uid": "${dataSource}"
-              },
-              "query": "from(bucket: \"${dataSource}\")\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) => r[\"_measurement\"] == \"tail_dnsbl_log\")\n  |> group(columns: [\"src_ip\"])\n  |> aggregateWindow(every: v.windowPeriod, fn: last, createEmpty: false)\n  |> group(columns: [\"tld\"], mode:\"by\")\n  |> sort(columns: [\"_value\"], desc: true)\n  |> count()\n  |> group()\n  |> top(n: 10)\n\n  ",
-              "refId": "A"
-            }
-          ],
-          "title": "Top 10 DNSBL  Blocked Domains",
-          "transformations": [
-            {
-              "id": "organize",
-              "options": {
-                "excludeByName": {},
-                "indexByName": {
-                  "_value": 1,
-                  "tld": 0
-                },
-                "renameByName": {
-                  "_value": "Blocked",
-                  "tld": "Domain"
-                }
-              }
-            }
-          ],
-          "type": "table"
+          "hide": false,
+          "query": "from(bucket: \"${dataSource}\")\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) => r[\"_measurement\"] == \"tail_ip_block_log\")\n  |> filter(fn: (r) => r[\"_field\"] == \"direction\")\n  |> filter(fn: (r) => r[\"_value\"] == \"out\")\n  |> aggregateWindow(every: v.windowPeriod, fn: last, createEmpty: false)\n  |> group(columns: [\"_time\"], mode:\"by\")\n  |> count(column: \"_value\")\n  |> rename(columns: {\"_value\": \"Blocked Outbound\"})\n\n  |> group()",
+          "refId": "B"
         }
       ],
-      "title": "pfBlocker Stats",
-      "type": "row"
+      "title": "IP - Blocked Packet Stats",
+      "transformations": [
+        {
+          "id": "renameByRegex",
+          "options": {}
+        }
+      ],
+      "type": "stat"
     },
     {
-      "collapsed": true,
+      "datasource": {
+        "type": "influxdb",
+        "uid": "${dataSource}"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "#EAB839",
+                "value": 0
+              },
+              {
+                "color": "#6ED0E0",
+                "value": 10
+              },
+              {
+                "color": "#EF843C",
+                "value": 20
+              },
+              {
+                "color": "#E24D42",
+                "value": 30
+              },
+              {
+                "color": "#1F78C1",
+                "value": 40
+              },
+              {
+                "color": "#BA43A9",
+                "value": 50
+              },
+              {
+                "color": "#705DA0",
+                "value": 60
+              },
+              {
+                "color": "#508642",
+                "value": 70
+              },
+              {
+                "color": "#CCA300",
+                "value": 80
+              },
+              {
+                "color": "#447EBC",
+                "value": 90
+              },
+              {
+                "color": "#C15C17",
+                "value": 100
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
       "gridPos": {
-        "h": 1,
-        "w": 24,
-        "x": 0,
+        "h": 8,
+        "w": 6,
+        "x": 9,
         "y": 14
       },
-      "id": 72,
-      "panels": [
-        {
-          "datasource": {
-            "type": "influxdb",
-            "uid": "${dataSource}"
-          },
-          "description": "",
-          "fieldConfig": {
-            "defaults": {
-              "color": {
-                "mode": "thresholds"
-              },
-              "custom": {
-                "align": "center",
-                "displayMode": "auto",
-                "filterable": true
-              },
-              "mappings": [],
-              "thresholds": {
-                "mode": "absolute",
-                "steps": [
-                  {
-                    "color": "green",
-                    "value": null
-                  }
-                ]
-              }
-            },
-            "overrides": [
-              {
-                "matcher": {
-                  "id": "byName",
-                  "options": "Dest Port"
-                },
-                "properties": [
-                  {
-                    "id": "custom.width",
-                    "value": 88
-                  }
-                ]
-              },
-              {
-                "matcher": {
-                  "id": "byName",
-                  "options": "Dest IP"
-                },
-                "properties": [
-                  {
-                    "id": "custom.width",
-                    "value": 109
-                  }
-                ]
-              },
-              {
-                "matcher": {
-                  "id": "byName",
-                  "options": "Source IP"
-                },
-                "properties": [
-                  {
-                    "id": "custom.width",
-                    "value": 121
-                  }
-                ]
-              },
-              {
-                "matcher": {
-                  "id": "byName",
-                  "options": "Blocked Count"
-                },
-                "properties": [
-                  {
-                    "id": "custom.width",
-                    "value": 135
-                  }
-                ]
-              }
-            ]
-          },
-          "gridPos": {
-            "h": 7,
-            "w": 6,
-            "x": 0,
-            "y": 3
-          },
-          "id": 74,
-          "options": {
-            "footer": {
-              "fields": "",
-              "reducer": [
-                "sum"
-              ],
-              "show": false
-            },
-            "showHeader": true,
-            "sortBy": [
-              {
-                "desc": true,
-                "displayName": "Blocked Count"
-              }
-            ]
-          },
-          "pluginVersion": "8.3.0-beta2",
-          "targets": [
-            {
-              "datasource": {
-                "type": "influxdb",
-                "uid": "${dataSource}"
-              },
-              "query": "from(bucket: \"${dataSource}\")\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) => r[\"_measurement\"] == \"tail_ip_block_log\")\n  |> filter(fn: (r) => r[\"_field\"] == \"direction\")\n  |> filter(fn: (r) => r[\"_value\"] == \"in\")\n  |> group(columns: [\"src_ip\"])\n  |> aggregateWindow(every: v.windowPeriod, fn: last, createEmpty: false)\n  |> group(columns: [\"src_ip\", \"dest_ip\",\"dest_port\"])\n  |> count()\n  |> group()\n  |> sort(columns: [\"_value\"], desc: true)\n  |> top(n: 10)",
-              "refId": "A"
-            }
-          ],
-          "title": "IP - Top 10 Blocked - IN (by Host/Port)",
-          "transformations": [
-            {
-              "id": "organize",
-              "options": {
-                "excludeByName": {},
-                "indexByName": {
-                  "_value": 3,
-                  "dest_ip": 1,
-                  "dest_port": 2,
-                  "src_ip": 0
-                },
-                "renameByName": {
-                  "_value": "Blocked Count",
-                  "dest_ip": "Dest IP",
-                  "dest_port": "Dest Port",
-                  "src_ip": "Source IP"
-                }
-              }
-            }
-          ],
-          "type": "table"
+      "id": 66,
+      "options": {
+        "basemap": {
+          "config": {},
+          "name": "Layer 0",
+          "type": "default"
         },
-        {
-          "datasource": {
-            "type": "influxdb",
-            "uid": "${dataSource}"
-          },
-          "description": "",
-          "fieldConfig": {
-            "defaults": {
-              "color": {
-                "mode": "thresholds"
-              },
-              "custom": {
-                "align": "center",
-                "displayMode": "auto",
-                "filterable": true
-              },
-              "mappings": [],
-              "thresholds": {
-                "mode": "absolute",
-                "steps": [
-                  {
-                    "color": "green",
-                    "value": null
-                  }
-                ]
-              }
-            },
-            "overrides": [
-              {
-                "matcher": {
-                  "id": "byName",
-                  "options": "Dest Port"
-                },
-                "properties": [
-                  {
-                    "id": "custom.width",
-                    "value": 97
-                  }
-                ]
-              },
-              {
-                "matcher": {
-                  "id": "byName",
-                  "options": "Dest IP"
-                },
-                "properties": [
-                  {
-                    "id": "custom.width",
-                    "value": 109
-                  }
-                ]
-              },
-              {
-                "matcher": {
-                  "id": "byName",
-                  "options": "Port"
-                },
-                "properties": [
-                  {
-                    "id": "custom.width",
-                    "value": 76
-                  }
-                ]
-              },
-              {
-                "matcher": {
-                  "id": "byName",
-                  "options": "Blocked Count"
-                },
-                "properties": [
-                  {
-                    "id": "custom.width",
-                    "value": 144
-                  }
-                ]
-              }
-            ]
-          },
-          "gridPos": {
-            "h": 7,
-            "w": 3,
-            "x": 6,
-            "y": 3
-          },
-          "id": 76,
-          "options": {
-            "footer": {
-              "fields": "",
-              "reducer": [
-                "sum"
-              ],
-              "show": false
-            },
-            "showHeader": true,
-            "sortBy": [
-              {
-                "desc": true,
-                "displayName": "Blocked Count"
-              }
-            ]
-          },
-          "pluginVersion": "8.3.0-beta2",
-          "targets": [
-            {
-              "datasource": {
-                "type": "influxdb",
-                "uid": "${dataSource}"
-              },
-              "query": "from(bucket: \"${dataSource}\")\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) => r[\"_measurement\"] == \"tail_ip_block_log\")\n  |> filter(fn: (r) => r[\"_field\"] == \"direction\")\n  |> filter(fn: (r) => r[\"_value\"] == \"in\")\n  |> group(columns: [\"src_ip\"])\n  |> aggregateWindow(every: v.windowPeriod, fn: last, createEmpty: false)\n  |> group(columns: [\"dest_port\"])\n  |> count()\n  |> group()\n  |> sort(columns: [\"_value\"], desc: true)\n  |> top(n: 10)",
-              "refId": "A"
-            }
-          ],
-          "title": "Port - Top 10 Blocked - IN",
-          "transformations": [
-            {
-              "id": "organize",
-              "options": {
-                "excludeByName": {},
-                "indexByName": {
-                  "_value": 3,
-                  "dest_ip": 1,
-                  "dest_port": 2,
-                  "src_ip": 0
-                },
-                "renameByName": {
-                  "_value": "Blocked Count",
-                  "dest_ip": "Dest IP",
-                  "dest_port": "Port",
-                  "src_ip": "Source IP"
-                }
-              }
-            }
-          ],
-          "type": "table"
+        "controls": {
+          "mouseWheelZoom": true,
+          "showAttribution": true,
+          "showDebug": false,
+          "showScale": false,
+          "showZoom": true
         },
+        "layers": [
+          {
+            "config": {
+              "showLegend": true,
+              "style": {
+                "color": {
+                  "field": "_value",
+                  "fixed": "dark-green"
+                },
+                "opacity": 0.4,
+                "size": {
+                  "field": "_value",
+                  "fixed": 5,
+                  "max": 15,
+                  "min": 2
+                },
+                "symbol": {
+                  "fixed": "img/icons/marker/circle.svg",
+                  "mode": "fixed"
+                },
+                "textConfig": {
+                  "fontSize": 12,
+                  "offsetX": 0,
+                  "offsetY": 0,
+                  "textAlign": "center",
+                  "textBaseline": "middle"
+                }
+              }
+            },
+            "location": {
+              "geohash": "geoip_code",
+              "lookup": "geoip_code",
+              "mode": "lookup"
+            },
+            "name": "Layer 1",
+            "type": "markers"
+          }
+        ],
+        "view": {
+          "id": "zero",
+          "lat": 0,
+          "lon": 0,
+          "zoom": 1
+        }
+      },
+      "pluginVersion": "8.3.0-beta2",
+      "targets": [
         {
           "datasource": {
             "type": "influxdb",
             "uid": "${dataSource}"
           },
-          "description": "",
-          "fieldConfig": {
-            "defaults": {
-              "color": {
-                "mode": "thresholds"
-              },
-              "custom": {
-                "align": "center",
-                "displayMode": "auto",
-                "filterable": true
-              },
-              "mappings": [],
-              "thresholds": {
-                "mode": "absolute",
-                "steps": [
-                  {
-                    "color": "green",
-                    "value": null
-                  },
-                  {
-                    "color": "red",
-                    "value": 80
-                  }
-                ]
-              }
-            },
-            "overrides": [
-              {
-                "matcher": {
-                  "id": "byName",
-                  "options": "Feed Name"
-                },
-                "properties": [
-                  {
-                    "id": "custom.width",
-                    "value": 165
-                  }
-                ]
-              },
-              {
-                "matcher": {
-                  "id": "byName",
-                  "options": "Blocked Count"
-                },
-                "properties": [
-                  {
-                    "id": "custom.width",
-                    "value": 131
-                  }
-                ]
-              }
-            ]
-          },
-          "gridPos": {
-            "h": 7,
-            "w": 4,
-            "x": 10,
-            "y": 3
-          },
-          "id": 83,
-          "options": {
-            "footer": {
-              "fields": "",
-              "reducer": [
-                "sum"
-              ],
-              "show": false
-            },
-            "showHeader": true,
-            "sortBy": []
-          },
-          "pluginVersion": "8.3.0-beta2",
-          "targets": [
-            {
-              "datasource": {
-                "type": "influxdb",
-                "uid": "${dataSource}"
-              },
-              "query": "  from(bucket:\"${dataSource}\")\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) => r[\"_measurement\"] == \"tail_dnsbl_log\")\n  |> filter(fn: (r) => r[\"_field\"] == \"blocktype\")\n  |> group(columns: [\"feed_name\"])\n  |> aggregateWindow(every: v.windowPeriod, fn: last, createEmpty: false)\n  |> count()\n  |> group()\n  |> sort(columns: [\"_value\"], desc: true)\n  |> top(n: 10)\n  |> drop(columns: [\"_start\",\"_stop\"])",
-              "refId": "A"
-            }
-          ],
-          "title": "Top 10 DNSBL Feeds",
-          "transformations": [
-            {
-              "id": "organize",
-              "options": {
-                "excludeByName": {},
-                "indexByName": {},
-                "renameByName": {
-                  "_value": "Blocked Count",
-                  "feed_name": "Feed Name"
-                }
-              }
-            }
-          ],
-          "type": "table"
-        },
-        {
-          "datasource": {
-            "type": "influxdb",
-            "uid": "${dataSource}"
-          },
-          "description": "",
-          "fieldConfig": {
-            "defaults": {
-              "color": {
-                "mode": "thresholds"
-              },
-              "custom": {
-                "align": "center",
-                "displayMode": "auto",
-                "filterable": true
-              },
-              "mappings": [],
-              "thresholds": {
-                "mode": "absolute",
-                "steps": [
-                  {
-                    "color": "green",
-                    "value": null
-                  }
-                ]
-              }
-            },
-            "overrides": [
-              {
-                "matcher": {
-                  "id": "byName",
-                  "options": "Dest Port"
-                },
-                "properties": [
-                  {
-                    "id": "custom.width",
-                    "value": 97
-                  }
-                ]
-              },
-              {
-                "matcher": {
-                  "id": "byName",
-                  "options": "Dest IP"
-                },
-                "properties": [
-                  {
-                    "id": "custom.width",
-                    "value": 109
-                  }
-                ]
-              },
-              {
-                "matcher": {
-                  "id": "byName",
-                  "options": "Port"
-                },
-                "properties": [
-                  {
-                    "id": "custom.width",
-                    "value": 76
-                  }
-                ]
-              },
-              {
-                "matcher": {
-                  "id": "byName",
-                  "options": "Blocked Count"
-                },
-                "properties": [
-                  {
-                    "id": "custom.width",
-                    "value": 144
-                  }
-                ]
-              }
-            ]
-          },
-          "gridPos": {
-            "h": 7,
-            "w": 3,
-            "x": 15,
-            "y": 3
-          },
-          "id": 81,
-          "options": {
-            "footer": {
-              "fields": "",
-              "reducer": [
-                "sum"
-              ],
-              "show": false
-            },
-            "showHeader": true,
-            "sortBy": [
-              {
-                "desc": true,
-                "displayName": "Blocked Count"
-              }
-            ]
-          },
-          "pluginVersion": "8.3.0-beta2",
-          "targets": [
-            {
-              "datasource": {
-                "type": "influxdb",
-                "uid": "${dataSource}"
-              },
-              "query": "from(bucket: \"${dataSource}\")\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) => r[\"_measurement\"] == \"tail_ip_block_log\")\n  |> filter(fn: (r) => r[\"_field\"] == \"direction\")\n  |> filter(fn: (r) => r[\"_value\"] == \"out\")\n  |> group(columns: [\"src_ip\"])\n  |> aggregateWindow(every: v.windowPeriod, fn: last, createEmpty: false)\n  |> group(columns: [\"dest_port\"])\n  |> count()\n  |> group()\n  |> sort(columns: [\"_value\"], desc: true)\n  |> top(n: 10)",
-              "refId": "A"
-            }
-          ],
-          "title": "Port - Top 10 Blocked - OUT",
-          "transformations": [
-            {
-              "id": "organize",
-              "options": {
-                "excludeByName": {},
-                "indexByName": {
-                  "_value": 3,
-                  "dest_ip": 1,
-                  "dest_port": 2,
-                  "src_ip": 0
-                },
-                "renameByName": {
-                  "_value": "Blocked Count",
-                  "dest_ip": "Dest IP",
-                  "dest_port": "Port",
-                  "src_ip": "Source IP"
-                }
-              }
-            }
-          ],
-          "type": "table"
-        },
-        {
-          "datasource": {
-            "type": "influxdb",
-            "uid": "${dataSource}"
-          },
-          "description": "",
-          "fieldConfig": {
-            "defaults": {
-              "color": {
-                "mode": "thresholds"
-              },
-              "custom": {
-                "align": "center",
-                "displayMode": "auto",
-                "filterable": true
-              },
-              "mappings": [],
-              "thresholds": {
-                "mode": "absolute",
-                "steps": [
-                  {
-                    "color": "green",
-                    "value": null
-                  }
-                ]
-              }
-            },
-            "overrides": [
-              {
-                "matcher": {
-                  "id": "byName",
-                  "options": "Dest Port"
-                },
-                "properties": [
-                  {
-                    "id": "custom.width",
-                    "value": 88
-                  }
-                ]
-              },
-              {
-                "matcher": {
-                  "id": "byName",
-                  "options": "Dest IP"
-                },
-                "properties": [
-                  {
-                    "id": "custom.width",
-                    "value": 109
-                  }
-                ]
-              },
-              {
-                "matcher": {
-                  "id": "byName",
-                  "options": "Source IP"
-                },
-                "properties": [
-                  {
-                    "id": "custom.width",
-                    "value": 121
-                  }
-                ]
-              },
-              {
-                "matcher": {
-                  "id": "byName",
-                  "options": "Blocked Count"
-                },
-                "properties": [
-                  {
-                    "id": "custom.width",
-                    "value": 135
-                  }
-                ]
-              }
-            ]
-          },
-          "gridPos": {
-            "h": 7,
-            "w": 6,
-            "x": 18,
-            "y": 3
-          },
-          "id": 78,
-          "options": {
-            "footer": {
-              "fields": "",
-              "reducer": [
-                "sum"
-              ],
-              "show": false
-            },
-            "showHeader": true,
-            "sortBy": [
-              {
-                "desc": true,
-                "displayName": "Blocked Count"
-              }
-            ]
-          },
-          "pluginVersion": "8.3.0-beta2",
-          "targets": [
-            {
-              "datasource": {
-                "type": "influxdb",
-                "uid": "${dataSource}"
-              },
-              "query": "from(bucket: \"${dataSource}\")\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) => r[\"_measurement\"] == \"tail_ip_block_log\")\n  |> filter(fn: (r) => r[\"_field\"] == \"direction\")\n  |> filter(fn: (r) => r[\"_value\"] == \"out\")\n  |> group(columns: [\"src_ip\"])\n  |> aggregateWindow(every: v.windowPeriod, fn: last, createEmpty: false)\n  |> group(columns: [\"src_ip\", \"dest_ip\",\"dest_port\"])\n  |> count()\n  |> group()\n  |> sort(columns: [\"_value\"], desc: true)\n  |> top(n: 10)",
-              "refId": "A"
-            }
-          ],
-          "title": "IP - Top 10 Blocked - OUT (by Host/Port)",
-          "transformations": [
-            {
-              "id": "organize",
-              "options": {
-                "excludeByName": {},
-                "indexByName": {
-                  "_value": 3,
-                  "dest_ip": 1,
-                  "dest_port": 2,
-                  "src_ip": 0
-                },
-                "renameByName": {
-                  "_value": "Blocked Count",
-                  "dest_ip": "Dest IP",
-                  "dest_port": "Dest Port",
-                  "src_ip": "Source IP"
-                }
-              }
-            }
-          ],
-          "type": "table"
-        },
-        {
-          "datasource": {
-            "type": "influxdb",
-            "uid": "${dataSource}"
-          },
-          "description": "",
-          "fieldConfig": {
-            "defaults": {
-              "color": {
-                "mode": "thresholds"
-              },
-              "custom": {
-                "align": "center",
-                "displayMode": "auto",
-                "filterable": true
-              },
-              "mappings": [],
-              "thresholds": {
-                "mode": "absolute",
-                "steps": [
-                  {
-                    "color": "green",
-                    "value": null
-                  }
-                ]
-              }
-            },
-            "overrides": [
-              {
-                "matcher": {
-                  "id": "byName",
-                  "options": "Dest Port"
-                },
-                "properties": [
-                  {
-                    "id": "custom.width",
-                    "value": 97
-                  }
-                ]
-              },
-              {
-                "matcher": {
-                  "id": "byName",
-                  "options": "Dest IP"
-                },
-                "properties": [
-                  {
-                    "id": "custom.width",
-                    "value": 109
-                  }
-                ]
-              },
-              {
-                "matcher": {
-                  "id": "byName",
-                  "options": "Protocol"
-                },
-                "properties": [
-                  {
-                    "id": "custom.width",
-                    "value": 86
-                  }
-                ]
-              },
-              {
-                "matcher": {
-                  "id": "byName",
-                  "options": "Source IP"
-                },
-                "properties": [
-                  {
-                    "id": "custom.width",
-                    "value": 121
-                  }
-                ]
-              },
-              {
-                "matcher": {
-                  "id": "byName",
-                  "options": "Blocked Count"
-                },
-                "properties": [
-                  {
-                    "id": "custom.width",
-                    "value": 133
-                  }
-                ]
-              }
-            ]
-          },
-          "gridPos": {
-            "h": 7,
-            "w": 6,
-            "x": 0,
-            "y": 10
-          },
-          "id": 75,
-          "options": {
-            "footer": {
-              "fields": "",
-              "reducer": [
-                "sum"
-              ],
-              "show": false
-            },
-            "showHeader": true,
-            "sortBy": [
-              {
-                "desc": true,
-                "displayName": "Blocked Count"
-              }
-            ]
-          },
-          "pluginVersion": "8.3.0-beta2",
-          "targets": [
-            {
-              "datasource": {
-                "type": "influxdb",
-                "uid": "${dataSource}"
-              },
-              "query": "from(bucket: \"${dataSource}\")\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) => r[\"_measurement\"] == \"tail_ip_block_log\")\n  |> filter(fn: (r) => r[\"_field\"] == \"direction\")\n  |> filter(fn: (r) => r[\"_value\"] == \"in\")\n  |> group(columns: [\"src_ip\"])\n  |> aggregateWindow(every: v.windowPeriod, fn: last, createEmpty: false)\n  |> group(columns: [\"src_ip\", \"dest_ip\",\"protocol\"])\n  |> count()\n  |> group()\n  |> sort(columns: [\"_value\"], desc: true)\n  |> top(n: 10)",
-              "refId": "A"
-            }
-          ],
-          "title": "IP - Top 10 Blocked - IN (by Host/Protocol)",
-          "transformations": [
-            {
-              "id": "organize",
-              "options": {
-                "excludeByName": {},
-                "indexByName": {
-                  "_value": 3,
-                  "dest_ip": 1,
-                  "protocol": 2,
-                  "src_ip": 0
-                },
-                "renameByName": {
-                  "_value": "Blocked Count",
-                  "dest_ip": "Dest IP",
-                  "dest_port": "Dest Port",
-                  "protocol": "Protocol",
-                  "src_ip": "Source IP"
-                }
-              }
-            }
-          ],
-          "type": "table"
-        },
-        {
-          "datasource": {
-            "type": "influxdb",
-            "uid": "${dataSource}"
-          },
-          "description": "",
-          "fieldConfig": {
-            "defaults": {
-              "color": {
-                "mode": "thresholds"
-              },
-              "custom": {
-                "align": "auto",
-                "displayMode": "auto",
-                "filterable": true
-              },
-              "mappings": [],
-              "thresholds": {
-                "mode": "absolute",
-                "steps": [
-                  {
-                    "color": "green",
-                    "value": null
-                  }
-                ]
-              }
-            },
-            "overrides": [
-              {
-                "matcher": {
-                  "id": "byName",
-                  "options": "Dest Port"
-                },
-                "properties": [
-                  {
-                    "id": "custom.width",
-                    "value": 97
-                  }
-                ]
-              },
-              {
-                "matcher": {
-                  "id": "byName",
-                  "options": "Dest IP"
-                },
-                "properties": [
-                  {
-                    "id": "custom.width",
-                    "value": 109
-                  }
-                ]
-              },
-              {
-                "matcher": {
-                  "id": "byName",
-                  "options": "Port"
-                },
-                "properties": [
-                  {
-                    "id": "custom.width",
-                    "value": 76
-                  }
-                ]
-              },
-              {
-                "matcher": {
-                  "id": "byName",
-                  "options": "Protocol"
-                },
-                "properties": [
-                  {
-                    "id": "custom.width",
-                    "value": 82
-                  }
-                ]
-              },
-              {
-                "matcher": {
-                  "id": "byName",
-                  "options": "Blocked Count"
-                },
-                "properties": [
-                  {
-                    "id": "custom.width",
-                    "value": 140
-                  }
-                ]
-              }
-            ]
-          },
-          "gridPos": {
-            "h": 7,
-            "w": 3,
-            "x": 6,
-            "y": 10
-          },
-          "id": 77,
-          "options": {
-            "footer": {
-              "fields": "",
-              "reducer": [
-                "sum"
-              ],
-              "show": false
-            },
-            "showHeader": true,
-            "sortBy": [
-              {
-                "desc": true,
-                "displayName": "Blocked Count"
-              }
-            ]
-          },
-          "pluginVersion": "8.3.0-beta2",
-          "targets": [
-            {
-              "datasource": {
-                "type": "influxdb",
-                "uid": "${dataSource}"
-              },
-              "query": "from(bucket: \"${dataSource}\")\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) => r[\"_measurement\"] == \"tail_ip_block_log\")\n  |> filter(fn: (r) => r[\"_field\"] == \"direction\")\n  |> filter(fn: (r) => r[\"_value\"] == \"in\")\n  |> group(columns: [\"src_ip\"])\n  |> aggregateWindow(every: v.windowPeriod, fn: last, createEmpty: false)\n  |> group(columns: [\"protocol\"])\n  |> count()\n  |> group()\n  |> sort(columns: [\"_value\"], desc: true)\n  |> top(n: 10)",
-              "refId": "A"
-            }
-          ],
-          "title": "Protocol - Top 10 Blocked - IN",
-          "transformations": [
-            {
-              "id": "organize",
-              "options": {
-                "excludeByName": {},
-                "indexByName": {
-                  "_value": 1,
-                  "protocol": 0
-                },
-                "renameByName": {
-                  "_value": "Blocked Count",
-                  "dest_ip": "Dest IP",
-                  "dest_port": "Port",
-                  "protocol": "Protocol",
-                  "src_ip": "Source IP"
-                }
-              }
-            }
-          ],
-          "type": "table"
-        },
-        {
-          "datasource": {
-            "type": "influxdb",
-            "uid": "${dataSource}"
-          },
-          "description": "",
-          "fieldConfig": {
-            "defaults": {
-              "color": {
-                "mode": "thresholds"
-              },
-              "custom": {
-                "align": "center",
-                "displayMode": "auto",
-                "filterable": true
-              },
-              "mappings": [],
-              "thresholds": {
-                "mode": "absolute",
-                "steps": [
-                  {
-                    "color": "green",
-                    "value": null
-                  },
-                  {
-                    "color": "red",
-                    "value": 80
-                  }
-                ]
-              }
-            },
-            "overrides": [
-              {
-                "matcher": {
-                  "id": "byName",
-                  "options": "Feed Name"
-                },
-                "properties": [
-                  {
-                    "id": "custom.width",
-                    "value": 176
-                  }
-                ]
-              },
-              {
-                "matcher": {
-                  "id": "byName",
-                  "options": "Blocked Count"
-                },
-                "properties": [
-                  {
-                    "id": "custom.width",
-                    "value": 117
-                  }
-                ]
-              }
-            ]
-          },
-          "gridPos": {
-            "h": 7,
-            "w": 4,
-            "x": 10,
-            "y": 10
-          },
-          "id": 84,
-          "options": {
-            "footer": {
-              "fields": "",
-              "reducer": [
-                "sum"
-              ],
-              "show": false
-            },
-            "showHeader": true,
-            "sortBy": []
-          },
-          "pluginVersion": "8.3.0-beta2",
-          "targets": [
-            {
-              "datasource": {
-                "type": "influxdb",
-                "uid": "${dataSource}"
-              },
-              "query": " from(bucket:\"${dataSource}\")\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) => r[\"_measurement\"] == \"tail_ip_block_log\")\n  |> filter(fn: (r) => r[\"_field\"] == \"action\")\n  |> aggregateWindow(every: v.windowPeriod, fn: last, createEmpty: false)\n  |> group(columns: [\"feed_name\"])\n  |> aggregateWindow(every: v.windowPeriod, fn: last, createEmpty: false)\n  |> count()\n  |> group()\n  |> sort(columns: [\"_value\"], desc: true)\n  |> top(n: 10)\n  |> drop(columns: [\"_start\",\"_stop\"])\n  |> yield(name: \"last\")",
-              "refId": "A"
-            }
-          ],
-          "title": "Top 10 IP Block Feeds",
-          "transformations": [
-            {
-              "id": "organize",
-              "options": {
-                "excludeByName": {},
-                "indexByName": {},
-                "renameByName": {
-                  "_value": "Blocked Count",
-                  "feed_name": "Feed Name"
-                }
-              }
-            }
-          ],
-          "type": "table"
-        },
-        {
-          "datasource": {
-            "type": "influxdb",
-            "uid": "${dataSource}"
-          },
-          "description": "",
-          "fieldConfig": {
-            "defaults": {
-              "color": {
-                "mode": "thresholds"
-              },
-              "custom": {
-                "align": "auto",
-                "displayMode": "auto",
-                "filterable": true
-              },
-              "mappings": [],
-              "thresholds": {
-                "mode": "absolute",
-                "steps": [
-                  {
-                    "color": "green",
-                    "value": null
-                  }
-                ]
-              }
-            },
-            "overrides": [
-              {
-                "matcher": {
-                  "id": "byName",
-                  "options": "Dest Port"
-                },
-                "properties": [
-                  {
-                    "id": "custom.width",
-                    "value": 97
-                  }
-                ]
-              },
-              {
-                "matcher": {
-                  "id": "byName",
-                  "options": "Dest IP"
-                },
-                "properties": [
-                  {
-                    "id": "custom.width",
-                    "value": 109
-                  }
-                ]
-              },
-              {
-                "matcher": {
-                  "id": "byName",
-                  "options": "Port"
-                },
-                "properties": [
-                  {
-                    "id": "custom.width",
-                    "value": 76
-                  }
-                ]
-              },
-              {
-                "matcher": {
-                  "id": "byName",
-                  "options": "Protocol"
-                },
-                "properties": [
-                  {
-                    "id": "custom.width",
-                    "value": 82
-                  }
-                ]
-              },
-              {
-                "matcher": {
-                  "id": "byName",
-                  "options": "Blocked Count"
-                },
-                "properties": [
-                  {
-                    "id": "custom.width",
-                    "value": 140
-                  }
-                ]
-              }
-            ]
-          },
-          "gridPos": {
-            "h": 7,
-            "w": 3,
-            "x": 15,
-            "y": 10
-          },
-          "id": 80,
-          "options": {
-            "footer": {
-              "fields": "",
-              "reducer": [
-                "sum"
-              ],
-              "show": false
-            },
-            "showHeader": true,
-            "sortBy": [
-              {
-                "desc": true,
-                "displayName": "Blocked Count"
-              }
-            ]
-          },
-          "pluginVersion": "8.3.0-beta2",
-          "targets": [
-            {
-              "datasource": {
-                "type": "influxdb",
-                "uid": "${dataSource}"
-              },
-              "query": "from(bucket: \"${dataSource}\")\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) => r[\"_measurement\"] == \"tail_ip_block_log\")\n  |> filter(fn: (r) => r[\"_field\"] == \"direction\")\n  |> filter(fn: (r) => r[\"_value\"] == \"out\")\n  |> group(columns: [\"src_ip\"])\n  |> aggregateWindow(every: v.windowPeriod, fn: last, createEmpty: false)\n  |> group(columns: [\"protocol\"])\n  |> count()\n  |> group()\n  |> sort(columns: [\"_value\"], desc: true)\n  |> top(n: 10)",
-              "refId": "A"
-            }
-          ],
-          "title": "Protocol - Top 10 Blocked - OUT",
-          "transformations": [
-            {
-              "id": "organize",
-              "options": {
-                "excludeByName": {},
-                "indexByName": {
-                  "_value": 1,
-                  "protocol": 0
-                },
-                "renameByName": {
-                  "_value": "Blocked Count",
-                  "dest_ip": "Dest IP",
-                  "dest_port": "Port",
-                  "protocol": "Protocol",
-                  "src_ip": "Source IP"
-                }
-              }
-            }
-          ],
-          "type": "table"
-        },
-        {
-          "datasource": {
-            "type": "influxdb",
-            "uid": "${dataSource}"
-          },
-          "description": "",
-          "fieldConfig": {
-            "defaults": {
-              "color": {
-                "mode": "thresholds"
-              },
-              "custom": {
-                "align": "center",
-                "displayMode": "auto",
-                "filterable": true
-              },
-              "mappings": [],
-              "thresholds": {
-                "mode": "absolute",
-                "steps": [
-                  {
-                    "color": "green",
-                    "value": null
-                  }
-                ]
-              }
-            },
-            "overrides": [
-              {
-                "matcher": {
-                  "id": "byName",
-                  "options": "Dest Port"
-                },
-                "properties": [
-                  {
-                    "id": "custom.width",
-                    "value": 97
-                  }
-                ]
-              },
-              {
-                "matcher": {
-                  "id": "byName",
-                  "options": "Dest IP"
-                },
-                "properties": [
-                  {
-                    "id": "custom.width",
-                    "value": 109
-                  }
-                ]
-              },
-              {
-                "matcher": {
-                  "id": "byName",
-                  "options": "Protocol"
-                },
-                "properties": [
-                  {
-                    "id": "custom.width",
-                    "value": 86
-                  }
-                ]
-              },
-              {
-                "matcher": {
-                  "id": "byName",
-                  "options": "Source IP"
-                },
-                "properties": [
-                  {
-                    "id": "custom.width",
-                    "value": 121
-                  }
-                ]
-              },
-              {
-                "matcher": {
-                  "id": "byName",
-                  "options": "Blocked Count"
-                },
-                "properties": [
-                  {
-                    "id": "custom.width",
-                    "value": 133
-                  }
-                ]
-              }
-            ]
-          },
-          "gridPos": {
-            "h": 7,
-            "w": 6,
-            "x": 18,
-            "y": 10
-          },
-          "id": 79,
-          "options": {
-            "footer": {
-              "fields": "",
-              "reducer": [
-                "sum"
-              ],
-              "show": false
-            },
-            "showHeader": true,
-            "sortBy": [
-              {
-                "desc": true,
-                "displayName": "Blocked Count"
-              }
-            ]
-          },
-          "pluginVersion": "8.3.0-beta2",
-          "targets": [
-            {
-              "datasource": {
-                "type": "influxdb",
-                "uid": "${dataSource}"
-              },
-              "query": "from(bucket: \"${dataSource}\")\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) => r[\"_measurement\"] == \"tail_ip_block_log\")\n  |> filter(fn: (r) => r[\"_field\"] == \"direction\")\n  |> filter(fn: (r) => r[\"_value\"] == \"out\")\n  |> group(columns: [\"src_ip\"])\n  |> aggregateWindow(every: v.windowPeriod, fn: last, createEmpty: false)\n  |> group(columns: [\"src_ip\", \"dest_ip\",\"protocol\"])\n  |> count()\n  |> group()\n  |> sort(columns: [\"_value\"], desc: true)\n  |> top(n: 10)",
-              "refId": "A"
-            }
-          ],
-          "title": "IP - Top 10 Blocked - OUT (by Host/Protocol)",
-          "transformations": [
-            {
-              "id": "organize",
-              "options": {
-                "excludeByName": {},
-                "indexByName": {
-                  "_value": 3,
-                  "dest_ip": 1,
-                  "protocol": 2,
-                  "src_ip": 0
-                },
-                "renameByName": {
-                  "_value": "Blocked Count",
-                  "dest_ip": "Dest IP",
-                  "dest_port": "Dest Port",
-                  "protocol": "Protocol",
-                  "src_ip": "Source IP"
-                }
-              }
-            }
-          ],
-          "type": "table"
+          "query": "from(bucket: \"${dataSource}\")\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) => r[\"_measurement\"] == \"tail_ip_block_log\")\n  |> filter(fn: (r) => r[\"_field\"] == \"ip_evaluated\")\n  |> aggregateWindow(every: v.windowPeriod, fn: last, createEmpty: false)\n  |> group(columns: [\"geoip_code\"], mode:\"by\")\n  |> count(column: \"_value\")\n  |> group()",
+          "refId": "A"
         }
       ],
-      "title": "pfBlocker Details",
-      "type": "row"
+      "title": "IP  - Src/Dst Blocked Geo",
+      "type": "geomap"
+    },
+    {
+      "datasource": {
+        "type": "influxdb",
+        "uid": "${dataSource}"
+      },
+      "description": "",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 3,
+        "x": 15,
+        "y": 14
+      },
+      "id": 70,
+      "options": {
+        "colorMode": "value",
+        "graphMode": "area",
+        "justifyMode": "auto",
+        "orientation": "horizontal",
+        "reduceOptions": {
+          "calcs": [
+            "sum"
+          ],
+          "fields": "/^Value$/",
+          "values": false
+        },
+        "textMode": "auto"
+      },
+      "pluginVersion": "8.3.0-beta2",
+      "targets": [
+        {
+          "datasource": {
+            "type": "influxdb",
+            "uid": "${dataSource}"
+          },
+          "query": "from(bucket: \"${dataSource}\")\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) => r[\"_measurement\"] == \"tail_dnsbl_log\")\n  |> group(columns: [\"tld\"], mode:\"by\")\n  |> aggregateWindow(every: v.windowPeriod, fn: last, createEmpty: false)\n  |> group(columns: [\"_time\"], mode:\"by\")\n  |> count(column: \"_value\")\n  |> group()\n  ",
+          "refId": "A"
+        }
+      ],
+      "title": "DNSBL - Blocked Domain Queries",
+      "type": "stat"
+    },
+    {
+      "datasource": {
+        "type": "influxdb",
+        "uid": "${dataSource}"
+      },
+      "description": "",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "custom": {
+            "align": "auto",
+            "displayMode": "auto",
+            "filterable": false
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          }
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Blocked"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 72
+              }
+            ]
+          }
+        ]
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 3,
+        "x": 18,
+        "y": 14
+      },
+      "id": 24,
+      "options": {
+        "footer": {
+          "fields": "",
+          "reducer": [
+            "sum"
+          ],
+          "show": false
+        },
+        "frameIndex": 2,
+        "showHeader": true,
+        "sortBy": []
+      },
+      "pluginVersion": "8.3.0-beta2",
+      "targets": [
+        {
+          "datasource": {
+            "type": "influxdb",
+            "uid": "${dataSource}"
+          },
+          "query": "from(bucket: \"${dataSource}\")\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) => r[\"_measurement\"] == \"tail_dnsbl_log\")\n  |> group(columns: [\"tld\"], mode:\"by\")\n  |> aggregateWindow(every: v.windowPeriod, fn: last, createEmpty: false)\n  |> group(columns: [\"src_ip\"], mode:\"by\")\n  |> count(column: \"_value\")\n  |> sort(columns: [\"_value\"], desc: true)\n  |> group()\n  |> top(n: 10)\n  |> drop(columns:[\"_start\",\"_stop\"])",
+          "refId": "A"
+        }
+      ],
+      "title": " DNSBL - Source IP - Top 10 Blocked",
+      "transformations": [
+        {
+          "id": "organize",
+          "options": {
+            "excludeByName": {},
+            "indexByName": {
+              "_value": 1,
+              "src_ip": 0
+            },
+            "renameByName": {
+              "_value": "Blocked",
+              "src_ip": "Source IP",
+              "tld": "Domain"
+            }
+          }
+        }
+      ],
+      "type": "table"
+    },
+    {
+      "datasource": {
+        "type": "influxdb",
+        "uid": "${dataSource}"
+      },
+      "description": "",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "custom": {
+            "align": "auto",
+            "displayMode": "auto",
+            "filterable": false
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          }
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Blocked"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 72
+              }
+            ]
+          }
+        ]
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 3,
+        "x": 21,
+        "y": 14
+      },
+      "id": 25,
+      "options": {
+        "footer": {
+          "fields": "",
+          "reducer": [
+            "sum"
+          ],
+          "show": false
+        },
+        "frameIndex": 2,
+        "showHeader": true,
+        "sortBy": []
+      },
+      "pluginVersion": "8.3.0-beta2",
+      "targets": [
+        {
+          "datasource": {
+            "type": "influxdb",
+            "uid": "${dataSource}"
+          },
+          "query": "from(bucket: \"${dataSource}\")\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) => r[\"_measurement\"] == \"tail_dnsbl_log\")\n  |> group(columns: [\"src_ip\"])\n  |> aggregateWindow(every: v.windowPeriod, fn: last, createEmpty: false)\n  |> group(columns: [\"tld\"], mode:\"by\")\n  |> sort(columns: [\"_value\"], desc: true)\n  |> count()\n  |> group()\n  |> top(n: 10)\n\n  ",
+          "refId": "A"
+        }
+      ],
+      "title": "Top 10 DNSBL  Blocked Domains",
+      "transformations": [
+        {
+          "id": "organize",
+          "options": {
+            "excludeByName": {},
+            "indexByName": {
+              "_value": 1,
+              "tld": 0
+            },
+            "renameByName": {
+              "_value": "Blocked",
+              "tld": "Domain"
+            }
+          }
+        }
+      ],
+      "type": "table"
     },
     {
       "collapsed": false,
@@ -3050,7 +1701,1354 @@
         "h": 1,
         "w": 24,
         "x": 0,
-        "y": 15
+        "y": 22
+      },
+      "id": 72,
+      "panels": [],
+      "title": "pfBlocker Details",
+      "type": "row"
+    },
+    {
+      "datasource": {
+        "type": "influxdb",
+        "uid": "${dataSource}"
+      },
+      "description": "",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "custom": {
+            "align": "center",
+            "displayMode": "auto",
+            "filterable": true
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              }
+            ]
+          }
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Dest Port"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 88
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Dest IP"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 109
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Source IP"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 121
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Blocked Count"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 135
+              }
+            ]
+          }
+        ]
+      },
+      "gridPos": {
+        "h": 7,
+        "w": 6,
+        "x": 0,
+        "y": 23
+      },
+      "id": 74,
+      "options": {
+        "footer": {
+          "fields": "",
+          "reducer": [
+            "sum"
+          ],
+          "show": false
+        },
+        "showHeader": true,
+        "sortBy": [
+          {
+            "desc": true,
+            "displayName": "Blocked Count"
+          }
+        ]
+      },
+      "pluginVersion": "8.3.0-beta2",
+      "targets": [
+        {
+          "datasource": {
+            "type": "influxdb",
+            "uid": "${dataSource}"
+          },
+          "query": "from(bucket: \"${dataSource}\")\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) => r[\"_measurement\"] == \"tail_ip_block_log\")\n  |> filter(fn: (r) => r[\"_field\"] == \"direction\")\n  |> filter(fn: (r) => r[\"_value\"] == \"in\")\n  |> group(columns: [\"src_ip\"])\n  |> aggregateWindow(every: v.windowPeriod, fn: last, createEmpty: false)\n  |> group(columns: [\"src_ip\", \"dest_ip\",\"dest_port\"])\n  |> count()\n  |> group()\n  |> sort(columns: [\"_value\"], desc: true)\n  |> top(n: 10)",
+          "refId": "A"
+        }
+      ],
+      "title": "IP - Top 10 Blocked - IN (by Host/Port)",
+      "transformations": [
+        {
+          "id": "organize",
+          "options": {
+            "excludeByName": {},
+            "indexByName": {
+              "_value": 3,
+              "dest_ip": 1,
+              "dest_port": 2,
+              "src_ip": 0
+            },
+            "renameByName": {
+              "_value": "Blocked Count",
+              "dest_ip": "Dest IP",
+              "dest_port": "Dest Port",
+              "src_ip": "Source IP"
+            }
+          }
+        }
+      ],
+      "type": "table"
+    },
+    {
+      "datasource": {
+        "type": "influxdb",
+        "uid": "${dataSource}"
+      },
+      "description": "",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "custom": {
+            "align": "center",
+            "displayMode": "auto",
+            "filterable": true
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              }
+            ]
+          }
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Dest Port"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 97
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Dest IP"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 109
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Port"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 76
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Blocked Count"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 144
+              }
+            ]
+          }
+        ]
+      },
+      "gridPos": {
+        "h": 7,
+        "w": 3,
+        "x": 6,
+        "y": 23
+      },
+      "id": 76,
+      "options": {
+        "footer": {
+          "fields": "",
+          "reducer": [
+            "sum"
+          ],
+          "show": false
+        },
+        "showHeader": true,
+        "sortBy": [
+          {
+            "desc": true,
+            "displayName": "Blocked Count"
+          }
+        ]
+      },
+      "pluginVersion": "8.3.0-beta2",
+      "targets": [
+        {
+          "datasource": {
+            "type": "influxdb",
+            "uid": "${dataSource}"
+          },
+          "query": "from(bucket: \"${dataSource}\")\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) => r[\"_measurement\"] == \"tail_ip_block_log\")\n  |> filter(fn: (r) => r[\"_field\"] == \"direction\")\n  |> filter(fn: (r) => r[\"_value\"] == \"in\")\n  |> group(columns: [\"src_ip\"])\n  |> aggregateWindow(every: v.windowPeriod, fn: last, createEmpty: false)\n  |> group(columns: [\"dest_port\"])\n  |> count()\n  |> group()\n  |> sort(columns: [\"_value\"], desc: true)\n  |> top(n: 10)",
+          "refId": "A"
+        }
+      ],
+      "title": "Port - Top 10 Blocked - IN",
+      "transformations": [
+        {
+          "id": "organize",
+          "options": {
+            "excludeByName": {},
+            "indexByName": {
+              "_value": 3,
+              "dest_ip": 1,
+              "dest_port": 2,
+              "src_ip": 0
+            },
+            "renameByName": {
+              "_value": "Blocked Count",
+              "dest_ip": "Dest IP",
+              "dest_port": "Port",
+              "src_ip": "Source IP"
+            }
+          }
+        }
+      ],
+      "type": "table"
+    },
+    {
+      "datasource": {
+        "type": "influxdb",
+        "uid": "${dataSource}"
+      },
+      "description": "",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "custom": {
+            "align": "center",
+            "displayMode": "auto",
+            "filterable": true
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          }
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Feed Name"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 165
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Blocked Count"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 131
+              }
+            ]
+          }
+        ]
+      },
+      "gridPos": {
+        "h": 7,
+        "w": 4,
+        "x": 10,
+        "y": 23
+      },
+      "id": 83,
+      "options": {
+        "footer": {
+          "fields": "",
+          "reducer": [
+            "sum"
+          ],
+          "show": false
+        },
+        "showHeader": true,
+        "sortBy": []
+      },
+      "pluginVersion": "8.3.0-beta2",
+      "targets": [
+        {
+          "datasource": {
+            "type": "influxdb",
+            "uid": "${dataSource}"
+          },
+          "query": "  from(bucket:\"${dataSource}\")\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) => r[\"_measurement\"] == \"tail_dnsbl_log\")\n  |> filter(fn: (r) => r[\"_field\"] == \"blocktype\")\n  |> group(columns: [\"feed_name\"])\n  |> aggregateWindow(every: v.windowPeriod, fn: last, createEmpty: false)\n  |> count()\n  |> group()\n  |> sort(columns: [\"_value\"], desc: true)\n  |> top(n: 10)\n  |> drop(columns: [\"_start\",\"_stop\"])",
+          "refId": "A"
+        }
+      ],
+      "title": "Top 10 DNSBL Feeds",
+      "transformations": [
+        {
+          "id": "organize",
+          "options": {
+            "excludeByName": {},
+            "indexByName": {},
+            "renameByName": {
+              "_value": "Blocked Count",
+              "feed_name": "Feed Name"
+            }
+          }
+        }
+      ],
+      "type": "table"
+    },
+    {
+      "datasource": {
+        "type": "influxdb",
+        "uid": "${dataSource}"
+      },
+      "description": "",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "custom": {
+            "align": "center",
+            "displayMode": "auto",
+            "filterable": true
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              }
+            ]
+          }
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Dest Port"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 97
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Dest IP"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 109
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Port"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 76
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Blocked Count"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 144
+              }
+            ]
+          }
+        ]
+      },
+      "gridPos": {
+        "h": 7,
+        "w": 3,
+        "x": 15,
+        "y": 23
+      },
+      "id": 81,
+      "options": {
+        "footer": {
+          "fields": "",
+          "reducer": [
+            "sum"
+          ],
+          "show": false
+        },
+        "showHeader": true,
+        "sortBy": [
+          {
+            "desc": true,
+            "displayName": "Blocked Count"
+          }
+        ]
+      },
+      "pluginVersion": "8.3.0-beta2",
+      "targets": [
+        {
+          "datasource": {
+            "type": "influxdb",
+            "uid": "${dataSource}"
+          },
+          "query": "from(bucket: \"${dataSource}\")\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) => r[\"_measurement\"] == \"tail_ip_block_log\")\n  |> filter(fn: (r) => r[\"_field\"] == \"direction\")\n  |> filter(fn: (r) => r[\"_value\"] == \"out\")\n  |> group(columns: [\"src_ip\"])\n  |> aggregateWindow(every: v.windowPeriod, fn: last, createEmpty: false)\n  |> group(columns: [\"dest_port\"])\n  |> count()\n  |> group()\n  |> sort(columns: [\"_value\"], desc: true)\n  |> top(n: 10)",
+          "refId": "A"
+        }
+      ],
+      "title": "Port - Top 10 Blocked - OUT",
+      "transformations": [
+        {
+          "id": "organize",
+          "options": {
+            "excludeByName": {},
+            "indexByName": {
+              "_value": 3,
+              "dest_ip": 1,
+              "dest_port": 2,
+              "src_ip": 0
+            },
+            "renameByName": {
+              "_value": "Blocked Count",
+              "dest_ip": "Dest IP",
+              "dest_port": "Port",
+              "src_ip": "Source IP"
+            }
+          }
+        }
+      ],
+      "type": "table"
+    },
+    {
+      "datasource": {
+        "type": "influxdb",
+        "uid": "${dataSource}"
+      },
+      "description": "",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "custom": {
+            "align": "center",
+            "displayMode": "auto",
+            "filterable": true
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              }
+            ]
+          }
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Dest Port"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 88
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Dest IP"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 109
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Source IP"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 121
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Blocked Count"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 135
+              }
+            ]
+          }
+        ]
+      },
+      "gridPos": {
+        "h": 7,
+        "w": 6,
+        "x": 18,
+        "y": 23
+      },
+      "id": 78,
+      "options": {
+        "footer": {
+          "fields": "",
+          "reducer": [
+            "sum"
+          ],
+          "show": false
+        },
+        "showHeader": true,
+        "sortBy": [
+          {
+            "desc": true,
+            "displayName": "Blocked Count"
+          }
+        ]
+      },
+      "pluginVersion": "8.3.0-beta2",
+      "targets": [
+        {
+          "datasource": {
+            "type": "influxdb",
+            "uid": "${dataSource}"
+          },
+          "query": "from(bucket: \"${dataSource}\")\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) => r[\"_measurement\"] == \"tail_ip_block_log\")\n  |> filter(fn: (r) => r[\"_field\"] == \"direction\")\n  |> filter(fn: (r) => r[\"_value\"] == \"out\")\n  |> group(columns: [\"src_ip\"])\n  |> aggregateWindow(every: v.windowPeriod, fn: last, createEmpty: false)\n  |> group(columns: [\"src_ip\", \"dest_ip\",\"dest_port\"])\n  |> count()\n  |> group()\n  |> sort(columns: [\"_value\"], desc: true)\n  |> top(n: 10)",
+          "refId": "A"
+        }
+      ],
+      "title": "IP - Top 10 Blocked - OUT (by Host/Port)",
+      "transformations": [
+        {
+          "id": "organize",
+          "options": {
+            "excludeByName": {},
+            "indexByName": {
+              "_value": 3,
+              "dest_ip": 1,
+              "dest_port": 2,
+              "src_ip": 0
+            },
+            "renameByName": {
+              "_value": "Blocked Count",
+              "dest_ip": "Dest IP",
+              "dest_port": "Dest Port",
+              "src_ip": "Source IP"
+            }
+          }
+        }
+      ],
+      "type": "table"
+    },
+    {
+      "datasource": {
+        "type": "influxdb",
+        "uid": "${dataSource}"
+      },
+      "description": "",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "custom": {
+            "align": "center",
+            "displayMode": "auto",
+            "filterable": true
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              }
+            ]
+          }
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Dest Port"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 97
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Dest IP"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 109
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Protocol"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 86
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Source IP"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 121
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Blocked Count"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 133
+              }
+            ]
+          }
+        ]
+      },
+      "gridPos": {
+        "h": 7,
+        "w": 6,
+        "x": 0,
+        "y": 30
+      },
+      "id": 75,
+      "options": {
+        "footer": {
+          "fields": "",
+          "reducer": [
+            "sum"
+          ],
+          "show": false
+        },
+        "showHeader": true,
+        "sortBy": [
+          {
+            "desc": true,
+            "displayName": "Blocked Count"
+          }
+        ]
+      },
+      "pluginVersion": "8.3.0-beta2",
+      "targets": [
+        {
+          "datasource": {
+            "type": "influxdb",
+            "uid": "${dataSource}"
+          },
+          "query": "from(bucket: \"${dataSource}\")\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) => r[\"_measurement\"] == \"tail_ip_block_log\")\n  |> filter(fn: (r) => r[\"_field\"] == \"direction\")\n  |> filter(fn: (r) => r[\"_value\"] == \"in\")\n  |> group(columns: [\"src_ip\"])\n  |> aggregateWindow(every: v.windowPeriod, fn: last, createEmpty: false)\n  |> group(columns: [\"src_ip\", \"dest_ip\",\"protocol\"])\n  |> count()\n  |> group()\n  |> sort(columns: [\"_value\"], desc: true)\n  |> top(n: 10)",
+          "refId": "A"
+        }
+      ],
+      "title": "IP - Top 10 Blocked - IN (by Host/Protocol)",
+      "transformations": [
+        {
+          "id": "organize",
+          "options": {
+            "excludeByName": {},
+            "indexByName": {
+              "_value": 3,
+              "dest_ip": 1,
+              "protocol": 2,
+              "src_ip": 0
+            },
+            "renameByName": {
+              "_value": "Blocked Count",
+              "dest_ip": "Dest IP",
+              "dest_port": "Dest Port",
+              "protocol": "Protocol",
+              "src_ip": "Source IP"
+            }
+          }
+        }
+      ],
+      "type": "table"
+    },
+    {
+      "datasource": {
+        "type": "influxdb",
+        "uid": "${dataSource}"
+      },
+      "description": "",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "custom": {
+            "align": "auto",
+            "displayMode": "auto",
+            "filterable": true
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              }
+            ]
+          }
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Dest Port"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 97
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Dest IP"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 109
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Port"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 76
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Protocol"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 82
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Blocked Count"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 140
+              }
+            ]
+          }
+        ]
+      },
+      "gridPos": {
+        "h": 7,
+        "w": 3,
+        "x": 6,
+        "y": 30
+      },
+      "id": 77,
+      "options": {
+        "footer": {
+          "fields": "",
+          "reducer": [
+            "sum"
+          ],
+          "show": false
+        },
+        "showHeader": true,
+        "sortBy": [
+          {
+            "desc": true,
+            "displayName": "Blocked Count"
+          }
+        ]
+      },
+      "pluginVersion": "8.3.0-beta2",
+      "targets": [
+        {
+          "datasource": {
+            "type": "influxdb",
+            "uid": "${dataSource}"
+          },
+          "query": "from(bucket: \"${dataSource}\")\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) => r[\"_measurement\"] == \"tail_ip_block_log\")\n  |> filter(fn: (r) => r[\"_field\"] == \"direction\")\n  |> filter(fn: (r) => r[\"_value\"] == \"in\")\n  |> group(columns: [\"src_ip\"])\n  |> aggregateWindow(every: v.windowPeriod, fn: last, createEmpty: false)\n  |> group(columns: [\"protocol\"])\n  |> count()\n  |> group()\n  |> sort(columns: [\"_value\"], desc: true)\n  |> top(n: 10)",
+          "refId": "A"
+        }
+      ],
+      "title": "Protocol - Top 10 Blocked - IN",
+      "transformations": [
+        {
+          "id": "organize",
+          "options": {
+            "excludeByName": {},
+            "indexByName": {
+              "_value": 1,
+              "protocol": 0
+            },
+            "renameByName": {
+              "_value": "Blocked Count",
+              "dest_ip": "Dest IP",
+              "dest_port": "Port",
+              "protocol": "Protocol",
+              "src_ip": "Source IP"
+            }
+          }
+        }
+      ],
+      "type": "table"
+    },
+    {
+      "datasource": {
+        "type": "influxdb",
+        "uid": "${dataSource}"
+      },
+      "description": "",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "custom": {
+            "align": "center",
+            "displayMode": "auto",
+            "filterable": true
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          }
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Feed Name"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 176
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Blocked Count"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 117
+              }
+            ]
+          }
+        ]
+      },
+      "gridPos": {
+        "h": 7,
+        "w": 4,
+        "x": 10,
+        "y": 30
+      },
+      "id": 84,
+      "options": {
+        "footer": {
+          "fields": "",
+          "reducer": [
+            "sum"
+          ],
+          "show": false
+        },
+        "showHeader": true,
+        "sortBy": []
+      },
+      "pluginVersion": "8.3.0-beta2",
+      "targets": [
+        {
+          "datasource": {
+            "type": "influxdb",
+            "uid": "${dataSource}"
+          },
+          "query": " from(bucket:\"${dataSource}\")\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) => r[\"_measurement\"] == \"tail_ip_block_log\")\n  |> filter(fn: (r) => r[\"_field\"] == \"action\")\n  |> aggregateWindow(every: v.windowPeriod, fn: last, createEmpty: false)\n  |> group(columns: [\"feed_name\"])\n  |> aggregateWindow(every: v.windowPeriod, fn: last, createEmpty: false)\n  |> count()\n  |> group()\n  |> sort(columns: [\"_value\"], desc: true)\n  |> top(n: 10)\n  |> drop(columns: [\"_start\",\"_stop\"])\n  |> yield(name: \"last\")",
+          "refId": "A"
+        }
+      ],
+      "title": "Top 10 IP Block Feeds",
+      "transformations": [
+        {
+          "id": "organize",
+          "options": {
+            "excludeByName": {},
+            "indexByName": {},
+            "renameByName": {
+              "_value": "Blocked Count",
+              "feed_name": "Feed Name"
+            }
+          }
+        }
+      ],
+      "type": "table"
+    },
+    {
+      "datasource": {
+        "type": "influxdb",
+        "uid": "${dataSource}"
+      },
+      "description": "",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "custom": {
+            "align": "auto",
+            "displayMode": "auto",
+            "filterable": true
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              }
+            ]
+          }
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Dest Port"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 97
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Dest IP"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 109
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Port"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 76
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Protocol"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 82
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Blocked Count"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 140
+              }
+            ]
+          }
+        ]
+      },
+      "gridPos": {
+        "h": 7,
+        "w": 3,
+        "x": 15,
+        "y": 30
+      },
+      "id": 80,
+      "options": {
+        "footer": {
+          "fields": "",
+          "reducer": [
+            "sum"
+          ],
+          "show": false
+        },
+        "showHeader": true,
+        "sortBy": [
+          {
+            "desc": true,
+            "displayName": "Blocked Count"
+          }
+        ]
+      },
+      "pluginVersion": "8.3.0-beta2",
+      "targets": [
+        {
+          "datasource": {
+            "type": "influxdb",
+            "uid": "${dataSource}"
+          },
+          "query": "from(bucket: \"${dataSource}\")\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) => r[\"_measurement\"] == \"tail_ip_block_log\")\n  |> filter(fn: (r) => r[\"_field\"] == \"direction\")\n  |> filter(fn: (r) => r[\"_value\"] == \"out\")\n  |> group(columns: [\"src_ip\"])\n  |> aggregateWindow(every: v.windowPeriod, fn: last, createEmpty: false)\n  |> group(columns: [\"protocol\"])\n  |> count()\n  |> group()\n  |> sort(columns: [\"_value\"], desc: true)\n  |> top(n: 10)",
+          "refId": "A"
+        }
+      ],
+      "title": "Protocol - Top 10 Blocked - OUT",
+      "transformations": [
+        {
+          "id": "organize",
+          "options": {
+            "excludeByName": {},
+            "indexByName": {
+              "_value": 1,
+              "protocol": 0
+            },
+            "renameByName": {
+              "_value": "Blocked Count",
+              "dest_ip": "Dest IP",
+              "dest_port": "Port",
+              "protocol": "Protocol",
+              "src_ip": "Source IP"
+            }
+          }
+        }
+      ],
+      "type": "table"
+    },
+    {
+      "datasource": {
+        "type": "influxdb",
+        "uid": "${dataSource}"
+      },
+      "description": "",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "custom": {
+            "align": "center",
+            "displayMode": "auto",
+            "filterable": true
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              }
+            ]
+          }
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Dest Port"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 97
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Dest IP"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 109
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Protocol"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 86
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Source IP"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 121
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Blocked Count"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 133
+              }
+            ]
+          }
+        ]
+      },
+      "gridPos": {
+        "h": 7,
+        "w": 6,
+        "x": 18,
+        "y": 30
+      },
+      "id": 79,
+      "options": {
+        "footer": {
+          "fields": "",
+          "reducer": [
+            "sum"
+          ],
+          "show": false
+        },
+        "showHeader": true,
+        "sortBy": [
+          {
+            "desc": true,
+            "displayName": "Blocked Count"
+          }
+        ]
+      },
+      "pluginVersion": "8.3.0-beta2",
+      "targets": [
+        {
+          "datasource": {
+            "type": "influxdb",
+            "uid": "${dataSource}"
+          },
+          "query": "from(bucket: \"${dataSource}\")\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) => r[\"_measurement\"] == \"tail_ip_block_log\")\n  |> filter(fn: (r) => r[\"_field\"] == \"direction\")\n  |> filter(fn: (r) => r[\"_value\"] == \"out\")\n  |> group(columns: [\"src_ip\"])\n  |> aggregateWindow(every: v.windowPeriod, fn: last, createEmpty: false)\n  |> group(columns: [\"src_ip\", \"dest_ip\",\"protocol\"])\n  |> count()\n  |> group()\n  |> sort(columns: [\"_value\"], desc: true)\n  |> top(n: 10)",
+          "refId": "A"
+        }
+      ],
+      "title": "IP - Top 10 Blocked - OUT (by Host/Protocol)",
+      "transformations": [
+        {
+          "id": "organize",
+          "options": {
+            "excludeByName": {},
+            "indexByName": {
+              "_value": 3,
+              "dest_ip": 1,
+              "protocol": 2,
+              "src_ip": 0
+            },
+            "renameByName": {
+              "_value": "Blocked Count",
+              "dest_ip": "Dest IP",
+              "dest_port": "Dest Port",
+              "protocol": "Protocol",
+              "src_ip": "Source IP"
+            }
+          }
+        }
+      ],
+      "type": "table"
+    },
+    {
+      "collapsed": false,
+      "gridPos": {
+        "h": 1,
+        "w": 24,
+        "x": 0,
+        "y": 37
       },
       "id": 29,
       "panels": [],
@@ -3118,7 +3116,7 @@
         "h": 8,
         "w": 8,
         "x": 0,
-        "y": 16
+        "y": 38
       },
       "id": 42,
       "options": {
@@ -3202,7 +3200,7 @@
         "h": 8,
         "w": 16,
         "x": 8,
-        "y": 16
+        "y": 38
       },
       "id": 57,
       "options": {
@@ -3326,7 +3324,7 @@
         "h": 8,
         "w": 8,
         "x": 0,
-        "y": 24
+        "y": 46
       },
       "id": 48,
       "options": {
@@ -3431,7 +3429,7 @@
         "h": 8,
         "w": 16,
         "x": 8,
-        "y": 24
+        "y": 46
       },
       "id": 55,
       "options": {
@@ -3453,7 +3451,7 @@
             "type": "influxdb",
             "uid": "${dataSource}"
           },
-          "query": "intInfo = \nfrom(bucket: \"${dataSource}\")\n  |> range(start: -1m, stop: now())\n  |> filter(fn: (r) => r[\"_measurement\"] == \"interface\")\n  |> filter(fn: (r) => r[\"_field\"] == \"status\")\n  |> aggregateWindow(every: v.windowPeriod, fn: last, createEmpty: false)\n  |> rename(columns: {ip4_address: \"ipaddress\", name: \"interface\"})\n\n\ngwInfo = \nfrom(bucket: \"${dataSource}\")\n  |> range(start: -1m, stop: now())\n  |> filter(fn: (r) => r[\"_measurement\"] == \"gateways\")\n |> filter(fn: (r) => r[\"_field\"] == \"source\" or r[\"_field\"] == \"status\" or  r[\"_field\"] == \"gwdescr\" or r[\"_field\"] == \"monitor\" or r[\"_field\"] == \"defaultgw\")\n  |> filter(fn: (r) => r[\"gateway_name\"] =~ /${WAN_GW:regex}/)\n  |> aggregateWindow(every: v.windowPeriod, fn: last, createEmpty: false)\n  |> pivot(rowKey: [\"_time\"], columnKey: [\"_field\"], valueColumn: \"_value\")\n  |> drop(columns: [\"_time\"])\n  |> rename(columns: {source: \"ipaddress\"})\n\n\n   \njoin(\n    tables: {gwInfo: gwInfo, intInfo: intInfo},\n    on: [\"interface\"],\n)\n  |> group(columns: [\"gateway_name\"])\n\n  |> last(column: \"friendlyname\")\n  |> group()\n  |> keep(columns: [\"gwdescr\",\"interface\",\"ipaddress_gwInfo\",\"monitor\",\"name\",\"status\", \"defaultgw\"])",
+          "query": "intInfo = \nfrom(bucket: \"${dataSource}\")\n  |> range(start: -1m, stop: now())\n  |> filter(fn: (r) => r[\"_measurement\"] == \"interface\")\n  |> filter(fn: (r) => r[\"_field\"] == \"status\")\n  |> aggregateWindow(every: v.windowPeriod, fn: last, createEmpty: false)\n  |> rename(columns: {ip4_address: \"ipaddress\", name: \"interface\"})\n\n\ngwInfo = \nfrom(bucket: \"${dataSource}\")\n  |> range(start: -1m, stop: now())\n  |> filter(fn: (r) => r[\"_measurement\"] == \"gateways\")\n |> filter(fn: (r) => r[\"_field\"] == \"source\" or r[\"_field\"] == \"status\" or  r[\"_field\"] == \"gwdescr\" or r[\"_field\"] == \"monitor\" or r[\"_field\"] == \"defaultgw\" or r[\"_field\"] == \"substatus\")\n  |> filter(fn: (r) => r[\"gateway_name\"] =~ /${WAN_GW:regex}/)\n  |> aggregateWindow(every: v.windowPeriod, fn: last, createEmpty: false)\n  |> pivot(rowKey: [\"_time\"], columnKey: [\"_field\"], valueColumn: \"_value\")\n  |> drop(columns: [\"_time\"])\n  |> rename(columns: {source: \"ipaddress\"})\n\n\n   \njoin(\n    tables: {gwInfo: gwInfo, intInfo: intInfo},\n    on: [\"interface\"],\n)\n  |> group(columns: [\"gateway_name\"])\n\n  |> last(column: \"friendlyname\")\n  |> group()\n  |> keep(columns: [\"gwdescr\",\"interface\",\"ipaddress_gwInfo\",\"monitor\",\"name\",\"status\", \"defaultgw\", \"substatus\"])",
           "refId": "A"
         }
       ],
@@ -3502,7 +3500,7 @@
         "h": 1,
         "w": 24,
         "x": 0,
-        "y": 32
+        "y": 54
       },
       "id": 27,
       "panels": [],
@@ -3546,7 +3544,7 @@
         "h": 3,
         "w": 24,
         "x": 0,
-        "y": 33
+        "y": 55
       },
       "id": 31,
       "options": {
@@ -3635,7 +3633,7 @@
         "h": 7,
         "w": 8,
         "x": 0,
-        "y": 36
+        "y": 58
       },
       "id": 33,
       "options": {
@@ -3660,7 +3658,7 @@
             "uid": "Tr_isUb7k"
           },
           "hide": false,
-          "query": "intInfo =   from(bucket: \"${dataSource}\")\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) => r[\"_measurement\"] == \"interface\")\n  |> filter(fn: (r) => r[\"friendlyname\"] == \"${NetInterface}\")\n  |> distinct(column: \"friendlyname\")\n  |> keep(columns: [\"name\"])\n  |> rename(columns: {name: \"interface\"})\n\n\nnetStats = \nfrom(bucket: \"pfsense_201\")\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) => r[\"_measurement\"] == \"net\")\n  |> filter(fn: (r) => r[\"_field\"] == \"bytes_recv\" or r[\"_field\"] == \"bytes_sent\")\n  |> derivative(unit: 1s, nonNegative: true, columns: [\"_value\"], timeColumn: \"_time\")\n  \n\n \njoin(\n    tables: {netStats: netStats, intInfo: intInfo},\n    on: [\"interface\"],\n)",
+          "query": "intInfo =   from(bucket: \"${dataSource}\")\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) => r[\"_measurement\"] == \"interface\")\n  |> filter(fn: (r) => r[\"friendlyname\"] == \"${NetInterface}\")\n  |> distinct(column: \"friendlyname\")\n  |> keep(columns: [\"name\"])\n  |> rename(columns: {name: \"interface\"})\n\n\nnetStats = \nfrom(bucket: \"${dataSource}\")\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) => r[\"_measurement\"] == \"net\")\n  |> filter(fn: (r) => r[\"_field\"] == \"bytes_recv\" or r[\"_field\"] == \"bytes_sent\")\n  |> derivative(unit: 1s, nonNegative: true, columns: [\"_value\"], timeColumn: \"_time\")\n  \n\n \njoin(\n    tables: {netStats: netStats, intInfo: intInfo},\n    on: [\"interface\"],\n)",
           "refId": "A"
         }
       ],
@@ -3717,7 +3715,7 @@
         "h": 7,
         "w": 4,
         "x": 8,
-        "y": 36
+        "y": 58
       },
       "id": 35,
       "options": {
@@ -3792,7 +3790,7 @@
         "h": 7,
         "w": 4,
         "x": 12,
-        "y": 36
+        "y": 58
       },
       "id": 85,
       "options": {
@@ -3898,7 +3896,7 @@
         "h": 7,
         "w": 8,
         "x": 16,
-        "y": 36
+        "y": 58
       },
       "id": 34,
       "options": {
@@ -3923,7 +3921,7 @@
             "uid": "Tr_isUb7k"
           },
           "hide": false,
-          "query": "intInfo =   from(bucket: \"${dataSource}\")\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) => r[\"_measurement\"] == \"interface\")\n  |> filter(fn: (r) => r[\"friendlyname\"] == \"${NetInterface}\")\n  |> distinct(column: \"friendlyname\")\n  |> keep(columns: [\"name\"])\n  |> rename(columns: {name: \"interface\"})\n\n\nnetStats = \nfrom(bucket: \"pfsense_201\")\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) => r[\"_measurement\"] == \"net\")\n  |> filter(fn: (r) => r[\"_field\"] == \"packets_recv\" or r[\"_field\"] == \"packets_sent\")\n  |> derivative(unit: 1s, nonNegative: true, columns: [\"_value\"], timeColumn: \"_time\")\n  \n\n \njoin(\n    tables: {netStats: netStats, intInfo: intInfo},\n    on: [\"interface\"],\n)",
+          "query": "intInfo =   from(bucket: \"${dataSource}\")\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) => r[\"_measurement\"] == \"interface\")\n  |> filter(fn: (r) => r[\"friendlyname\"] == \"${NetInterface}\")\n  |> distinct(column: \"friendlyname\")\n  |> keep(columns: [\"name\"])\n  |> rename(columns: {name: \"interface\"})\n\n\nnetStats = \nfrom(bucket: \"${dataSource}\")\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) => r[\"_measurement\"] == \"net\")\n  |> filter(fn: (r) => r[\"_field\"] == \"packets_recv\" or r[\"_field\"] == \"packets_sent\")\n  |> derivative(unit: 1s, nonNegative: true, columns: [\"_value\"], timeColumn: \"_time\")\n  \n\n \njoin(\n    tables: {netStats: netStats, intInfo: intInfo},\n    on: [\"interface\"],\n)",
           "refId": "A"
         }
       ],
@@ -3973,12 +3971,12 @@
       },
       {
         "current": {
-          "selected": true,
+          "selected": false,
           "text": [
-            "WAN"
+            "USERLAN"
           ],
           "value": [
-            "WAN"
+            "USERLAN"
           ]
         },
         "datasource": {
@@ -4001,7 +3999,7 @@
       },
       {
         "current": {
-          "selected": true,
+          "selected": false,
           "text": [
             "All"
           ],
@@ -4037,6 +4035,6 @@
   "timezone": "",
   "title": "PFSense",
   "uid": "hxRS_8b7z",
-  "version": 119,
+  "version": 122,
   "weekStart": ""
 }
