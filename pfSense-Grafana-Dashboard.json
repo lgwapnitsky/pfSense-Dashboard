@@ -715,6 +715,7 @@
           },
           "displayName": "${__field.labels.path}",
           "mappings": [],
+          "max": 100,
           "thresholds": {
             "mode": "absolute",
             "steps": [
@@ -750,7 +751,7 @@
                 "value": {
                   "legend": false,
                   "tooltip": false,
-                  "viz": true
+                  "viz": false
                 }
               }
             ]
@@ -3422,6 +3423,30 @@
                 "value": 354
               }
             ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Gateway Description"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 333
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "substatus"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 130
+              }
+            ]
           }
         ]
       },
@@ -4035,6 +4060,6 @@
   "timezone": "",
   "title": "PFSense",
   "uid": "hxRS_8b7z",
-  "version": 122,
+  "version": 124,
   "weekStart": ""
 }
