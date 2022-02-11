@@ -22,7 +22,7 @@
   "fiscalYearStartMonth": 0,
   "graphTooltip": 0,
   "id": 3,
-  "iteration": 1644536390805,
+  "iteration": 1644594118836,
   "links": [],
   "liveNow": true,
   "panels": [
@@ -3821,10 +3821,12 @@
       "options": {
         "colorMode": "value",
         "graphMode": "area",
-        "justifyMode": "auto",
+        "justifyMode": "center",
         "orientation": "horizontal",
         "reduceOptions": {
-          "calcs": [],
+          "calcs": [
+            "lastNotNull"
+          ],
           "fields": "",
           "values": false
         },
@@ -3837,7 +3839,7 @@
             "type": "influxdb",
             "uid": "${dataSource}"
           },
-          "query": "intInfo =   from(bucket: \"${dataSource}\")\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) => r[\"_measurement\"] == \"interface\")\n  |> filter(fn: (r) => r[\"friendlyname\"] == \"${NetInterface}\")\n  |> distinct(column: \"friendlyname\")\n  |> keep(columns: [\"name\"])\n  |> rename(columns: {name: \"interface\"})\n\n\nnetStats = \nfrom(bucket: \"${dataSource}\")\n  |> range(start: -30d, stop: v.timeRangeStop)\n  |> filter(fn: (r) => r[\"_measurement\"] == \"net\")\n  |> filter(fn: (r) => r[\"_field\"] == \"bytes_recv\" or r[\"_field\"] == \"bytes_sent\")\n  |> derivative(unit: 30d, nonNegative: true, columns: [\"_value\"], timeColumn: \"_time\")\n  |> aggregateWindow(every: 1d, fn: mean)\n  \n\n \njoin(\n    tables: {netStats: netStats, intInfo: intInfo},\n    on: [\"interface\"],\n)",
+          "query": "import \"timezone\"\nimport \"date\"\n\noption location = timezone.location(name: \"America/New_York\")\n\nmonthDayOne = date.truncate(t: now(), unit: 1mo )\nmonthBeginning = date.truncate(t: monthDayOne, unit: 1d)\n\n\nintInfo =   from(bucket: \"${dataSource}\")\n  |> range(start: monthBeginning, stop: v.timeRangeStop)\n  |> filter(fn: (r) => r[\"_measurement\"] == \"interface\")\n  |> filter(fn: (r) => r[\"friendlyname\"] == \"${NetInterface}\")\n  |> distinct(column: \"friendlyname\")\n  |> keep(columns: [\"name\"])\n  |> rename(columns: {name: \"interface\"})\n\n\nnetStats = \nfrom(bucket: \"${dataSource}\")\n\n  |> range(start: monthBeginning, stop: v.timeRangeStop)\n  |> filter(fn: (r) => r[\"_measurement\"] == \"net\")\n  |> filter(fn: (r) => r[\"_field\"] == \"bytes_recv\" or r[\"_field\"] == \"bytes_sent\")\n  |> derivative(unit: 1d, nonNegative: true, columns: [\"_value\"], timeColumn: \"_time\")\n  |> aggregateWindow(every: 1d, fn: mean)\n  \n\n \njoin(\n    tables: {netStats: netStats, intInfo: intInfo},\n    on: [\"interface\"],\n)\n",
           "refId": "A"
         }
       ],
@@ -4053,13 +4055,13 @@
     ]
   },
   "time": {
-    "from": "now-6h",
+    "from": "now-5m",
     "to": "now"
   },
   "timepicker": {},
   "timezone": "",
   "title": "PFSense",
   "uid": "hxRS_8b7z",
-  "version": 124,
+  "version": 126,
   "weekStart": ""
 }
